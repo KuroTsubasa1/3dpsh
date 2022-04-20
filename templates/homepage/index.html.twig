@@ -1,0 +1,62 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Hello HomepageController!{% endblock %}
+
+{% block menu %}
+    <div class="fixed text-white bg-purple-700 w-[20%] min-h-screen  fixed left-0 top-0 z-50">
+
+        <div id="inner-menu" class="grid justify-center content-center min-w-full min-h-screen">
+
+            <ul class="text-right">
+                <li class="p-5 underline underline-offset-3 hover:underline-offset-8 hover:bg-purple-800 hover:rounded">
+                    WELCOME
+                </li>
+                <li class="p-5 underline underline-offset-3 hover:underline-offset-8 hover:bg-purple-800 hover:rounded">
+                    WHO AM I
+                </li>
+                <li class="p-5 underline underline-offset-3 hover:underline-offset-8 hover:bg-purple-800 hover:rounded">
+                    WHAT DO I DO
+                </li>
+                <li class="p-5 underline underline-offset-3 hover:underline-offset-8 hover:bg-purple-800 hover:rounded">
+                    GET IN TOUCH
+                </li>
+            </ul>
+
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    <div id="content-wrapper" class="relative ml-[20%] z-40">
+
+        <div id="" class="text-white">
+            <section class="grid justify-center content-center min-w-full min-h-screen bg-purple-900">
+                <div id="headline-card" class="text-right bg-purple-500/75 rounded p-5 min-w-fit drop-shadow-md  ml-[5px] mr-[5px]">
+                    <h1 class="text-6xl mb-5 drop-shadow-md">
+                        Welcome to <strong>LASSEHARM.SPACE</strong> 🚀
+                    </h1>
+                    <small class="text-3xl drop-shadow-md">
+                        It's a pleasure to meet <strong>YOU</strong> !
+                    </small>
+                </div>
+
+                <div id="hero-images">
+                    <img src="https://mdbootstrap.com/img/new/slides/041.jpg" class="max-w-full h-auto ml-[5px] mr-[5px]" alt="..."/>
+                </div>
+
+
+            </section>
+
+            <section class="min-w-full min-h-screen bg-purple-500">
+                Test
+            </section>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
