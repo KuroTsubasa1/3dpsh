@@ -8,4 +8,16 @@
 @import "bootstrap";
 */
 
-
+/* Scroll 3 */
+.sc3::-webkit-scrollbar {
+    width: 1px;
+    height: 3px;
+}
+.sc3::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+}
+.sc3::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+}
