@@ -3,23 +3,38 @@
 {% block title %}Hello HomepageController!{% endblock %}
 
 {% block menu %}
-    <div class="fixed text-white bg-purple-700 left-0 top-0 z-50  min-h-[60px] min-w-full  lg:min-w-[20%] lg:min-h-screen drop-shadow-lg ">
+    <div class="fixed text-[#23ce6b] bg-[#1A1D1A] left-0 top-0 z-50  min-h-[60px] min-w-full  lg:min-w-[20%] lg:min-h-screen drop-shadow-lg ">
 
 
         <div id="inner-menu" class="flex flex-wrap justify-center content-center min-w-full min-h-full lg:min-h-screen">
 
             <ul class="text-right ">
-                <li class="hover:bg-purple-800 hover:rounded-lg inline-block lg:block underline underline-offset-4 hover:underline-offset-8 lg:p-5 pl-5 pr-5 pt-2 pb-2 mt-2 lg:border-0">
-                    <span class=" p-3 lg:p-5 min-w-[12rem]   ">WELCOME</span>
+                <li class="hover:bg-[#272B27] hover:rounded-lg inline-block lg:block  lg:p-5 pl-5 pr-5 pt-2 pb-2 mt-2 lg:border-0">
+                    <a href="#welcome" class=" p-3 lg:p-5 w-full underline underline-offset-4 hover:underline-offset-8">WELCOME</a>
                 </li>
-                <li class="hover:bg-purple-800 hover:rounded-lg inline-block lg:block underline underline-offset-4 hover:underline-offset-8 lg:p-5 pl-5 pr-5 pt-2 pb-2 mt-2 lg:border-0">
-                    <span class=" p-3 lg:p-5 min-w-[12rem]   ">WELCOME</span>
+
+                <li class="hover:bg-[#272B27] hover:rounded-lg inline-block lg:block underline underline-offset-4 hover:underline-offset-8 lg:p-5 pl-5 pr-5 pt-2 pb-2 mt-2 lg:border-0">
+                    <a href="#cv" class=" p-3 lg:p-5 min-w-[12rem]   ">CV</a>
+                </li>
+
+                <li class="hover:bg-[#272B27] hover:rounded-lg inline-block lg:block underline underline-offset-4 hover:underline-offset-8 lg:p-5 pl-5 pr-5 pt-2 pb-2 mt-2 lg:border-0">
+                    <a href="#web-dev" class=" p-3 lg:p-5 min-w-[12rem]   ">WEB DEV</a>
+                </li>
+
+                <li class="hover:bg-[#272B27] hover:rounded-lg inline-block lg:block underline underline-offset-4 hover:underline-offset-8 lg:p-5 pl-5 pr-5 pt-2 pb-2 mt-2 lg:border-0">
+                    <a href="#game-dev" class=" p-3 lg:p-5 min-w-[12rem]   ">GAME DEV</a>
+                </li>
+
+                <li class="hover:bg-[#272B27] hover:rounded-lg inline-block lg:block underline underline-offset-4 hover:underline-offset-8 lg:p-5 pl-5 pr-5 pt-2 pb-2 mt-2 lg:border-0">
+                    <a href="#3d-design" class=" p-3 lg:p-5 min-w-[12rem]   ">3D DESIGN</a>
+                </li>
+
+                <li class="hover:bg-[#272B27] hover:rounded-lg inline-block lg:block underline underline-offset-4 hover:underline-offset-8 lg:p-5 pl-5 pr-5 pt-2 pb-2 mt-2 lg:border-0">
+                    <a href="#hobbys" class=" p-3 lg:p-5 min-w-[12rem]   ">HOBBY'S</a>
                 </li>
             </ul>
 
         </div>
-
-
 
 
     </div>
@@ -29,11 +44,11 @@
 
     <div id="content-wrapper" class="lg:ml-[20%] z-40">
 
-        <div id="" class="text-white">
+        <div id="" class="text-[#23CE6B]">
 
-            <section class="flex flex-wrap justify-center content-center w-auto min-w-fit min-h-screen bg-purple-900">
+            <section id="welcome" class="flex flex-wrap justify-center content-center w-auto min-w-fit min-h-screen bg-[#3A403A]">
 
-                <div id="headline-card" class="text-center lg:text-right bg-purple-500/75 rounded p-2 m-[5%] w-auto drop-shadow-md">
+                <div id="headline-card" class="text-center lg:text-right bg-[#1A1D1A] rounded p-2 m-[5%] w-auto drop-shadow-md">
                     <h1 class="text-4xl lg:text-6xl mb-5 drop-shadow-md">
                         Welcome to <strong>LASSEHARM.SPACE</strong> 🚀
                     </h1>
@@ -43,13 +58,61 @@
                 </div>
             </section>
 
-            <section class="flex flex-wrap justify-center content-center w-auto min-w-fit min-h-screen bg-purple-600">
-                <div id="headline-card" class="text-center lg:text-right bg-purple-500/75 rounded p-2 m-[5%] w-auto drop-shadow-md">
+            <section id="cv" class="flex flex-wrap justify-center content-center w-auto min-w-fit min-h-screen bg-[#2B2727]">
+                <div id="headline-card" class="text-center lg:text-right bg-[#1A1D1A] rounded p-2 m-[5%] w-auto drop-shadow-md">
                     <h1 class="text-4xl lg:text-6xl mb-5 drop-shadow-md">
-                        <strong>DUMMY TEXT</strong>
+                        <strong>CV</strong>
                     </h1>
                 </div>
             </section>
+
+            <section id="web-dev" class="flex flex-wrap justify-center content-center w-auto min-w-fit min-h-screen bg-[#3A403A]">
+                <div id="headline-card" class="text-center lg:text-right bg-[#1A1D1A] rounded p-2 m-[5%] w-auto drop-shadow-md">
+                    <h1 class="text-4xl lg:text-6xl mb-5 drop-shadow-md">
+                        <strong>Web Dev</strong>
+                    </h1>
+                </div>
+            </section>
+
+            <section id="game-dev" class="flex flex-wrap justify-center content-center w-auto min-w-fit min-h-screen bg-[#2B2727]">
+                <div id="headline-card" class="text-center lg:text-right bg-[#1A1D1A] rounded p-2 m-[5%] w-auto drop-shadow-md">
+                    <h1 class="text-4xl lg:text-6xl mb-5 drop-shadow-md">
+                        <strong>Game Dev</strong>
+                    </h1>
+                </div>
+            </section>
+
+            <section id="3d-design" class="flex flex-wrap justify-center content-center w-auto min-w-fit min-h-screen bg-[#3A403A]">
+                <div id="headline-card" class="text-center lg:text-right bg-[#1A1D1A] rounded p-2 m-[5%] w-auto drop-shadow-md">
+                    <h1 class="text-4xl lg:text-6xl mb-5 drop-shadow-md">
+                        <strong>3D Design</strong>
+                    </h1>
+                </div>
+            </section>
+
+            <section id="hobbys" class="flex flex-wrap justify-center content-center w-auto min-w-fit min-h-screen bg-[#2B2727]">
+                <div id="headline-card" class="text-center lg:text-right bg-[#1A1D1A] rounded p-2 m-[5%] w-auto drop-shadow-md">
+                    <h1 class="text-4xl lg:text-6xl mb-5 drop-shadow-md">
+                        <strong>Hobby's</strong>
+                    </h1>
+                </div>
+            </section>
+
+            <section class="flex flex-wrap w-auto min-w-fit min-h-screen bg-purple-400">
+
+                <section class="w-full min-h-[50vh] bg-white">
+                    AAA
+                </section>
+
+                <section class="w-full min-h-[50vh] bg-black">
+                    AAAA
+                </section>
+
+            </section>
+
+            <footer class="flex flex-wrap content-center w-full min-h-[15vh] bg-[#272B27]">
+                Footer <3
+            </footer>
 
         </div>
 
