@@ -1,0 +1,278 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Hello HomepageController!{% endblock %}
+
+{% block menu %}
+    <div class="fixed text-[#23ce6b] bg-[#1A1D1A] left-0 top-0 z-50  min-h-[60px] min-w-full  lg:min-w-[20%] lg:min-h-screen drop-shadow-lg ">
+
+
+        <div id="inner-menu" class="flex flex-wrap justify-center content-center min-w-full min-h-full lg:min-h-screen">
+
+            <ul class="text-right ">
+                <li class="hover:bg-[#272B27] hover:rounded-lg inline-block lg:block  lg:p-5 pl-5 pr-5 pt-2 pb-2 mt-2 lg:border-0">
+                    <a href="/#welcome" class=" p-3 lg:p-5 w-full underline underline-offset-4 hover:underline-offset-8">WELCOME</a>
+                </li>
+
+                <li class="hover:bg-[#272B27] hover:rounded-lg inline-block lg:block underline underline-offset-4 hover:underline-offset-8 lg:p-5 pl-5 pr-5 pt-2 pb-2 mt-2 lg:border-0">
+                    <a href="/#contact" class=" p-3 lg:p-5 min-w-[12rem]   ">Contact</a>
+                </li>
+            </ul>
+
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    <div id="content-wrapper" class="lg:ml-[20%] z-40">
+
+        <div id="" class="text-[#23CE6B]">
+
+            <section id="contact"
+                     class="flex flex-wrap justify-center content-center w-auto min-w-fit min-h-screen bg-[#2B2727]">
+                <div id="headline-card"
+                     class="text-center lg:text-left bg-[#1A1D1A] rounded p-2 m-[5%] w-auto drop-shadow-md">
+                    <h1 class="text-4xl lg:text-6xl mb-5 drop-shadow-md">
+                        <strong>Imprint and legal information</strong>
+                    </h1>
+                </div>
+                <div class="text-left w-full min-h-[50vh] bg-[#2B2727] text-black">
+
+                    <div id="contact-form" class=" bg-[#1A1D1A] rounded p-[10%] m-[5%]">
+
+                        <div class="flex justify-left">
+                            <div class="flex-row">
+                                <div class="flex-column">
+                                    <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight">
+                                        This imprint is valid for all telemedia of 3D Print Shop Harm, so also Twitter, Facebook + and other offers.
+                                    </p>
+                                </div>
+                                <section id="company">
+                                    <div class="flex-column mt-5">
+                                        <h2 class="text-2xl font-bold inline-block mb-2 text-white font-medium leading-tight uppercase">
+                                            Provider identification
+                                        </h2>
+                                    </div>
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight uppercase">
+                                            <strong>3D Print Shop Harm</strong>
+                                        </p>
+                                    </div>
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            Krete 8, 23701 Eutin
+                                        </p>
+                                    </div>
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            Email:
+                                        </p>
+                                        <a class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight"
+                                           href="mailto:service@3dps.space">service@3dps.space</a>
+                                    </div>
+
+                                    <div class="flex-column mt-5">
+                                        <p class="text-2xl form-label inline-block mb-2 text-white font-medium  leading-tight ">
+                                            Chief executive
+                                        </p>
+                                    </div>
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            Lasse Harm
+                                        </p>
+                                    </div>
+
+                                    <div class="flex-column mt-5">
+                                        <p class="text-2xl form-label inline-block mb-2 text-white font-medium  leading-tight ">
+                                            Tax number
+                                        </p>
+                                    </div>
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            USt-ID: DE 351 241 205
+                                        </p>
+                                    </div>
+
+                                    <div class="flex-column mt-5">
+                                        <p class="text-2xl form-label inline-block mb-2 text-white font-medium  leading-tight ">
+                                            Legal notice
+                                        </p>
+                                    </div>
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            1. content of the online offer
+                                        </p>
+                                    </div>
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            The author reserves the right not to be responsible for the topicality,
+                                            correctness, completeness or quality of the information provided. Liability
+                                            claims against the author, which refer to material or immaterial nature
+                                            caused by use or disuse of the information or the use of incorrect or
+                                            incomplete information are excluded, unless the author is not intentional or
+                                            grossly negligent fault.
+                                            All offers are subject to change and non-binding. The author expressly
+                                            reserves the right to change, supplement or delete parts of the pages or the
+                                            entire offer without prior notice or to discontinue the publication
+                                            temporarily or permanently.
+                                        </p>
+                                    </div>
+
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            2. references and links
+                                        </p>
+                                    </div>
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            The author is not responsible for any contents linked or referred to from
+                                            his pages - unless he has full knowledge of illegal contents and would be
+                                            able to prevent the visitors of his site fromviewing those pages.
+                                            The author hereby expressly declares that at the time the links were
+                                            created, no illegal content was identifiable on the linked pages. The author
+                                            has no influence on the current and future design, content or authorship of
+                                            the linked pages. Therefore, he hereby expressly dissociates himself from
+                                            all contents of all linked pages that were changed after the link was set.
+                                            This statement applies to all links and references set within the author's
+                                            own Internet offer as well as to external entries in guest books, discussion
+                                            forums, link directories, mailing lists and all other forms of databases set
+                                            up by the author to which external write access is possible. For illegal,
+                                            incorrect or incomplete contents and especially for damages resulting from
+                                            the use or non-use of such information, only the provider of the linked page
+                                            is liable, not the one who has linked to the respective publication.
+                                        </p>
+                                    </div>
+
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            3. copyright and trademark law
+                                        </p>
+                                    </div>
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            The author endeavors to observe the copyrights of the images, graphics,
+                                            sound documents, video sequences and texts used in all publications, to use
+                                            images, graphics, sound documents, video sequences and texts created by
+                                            himself or to use license-free graphics, sound documents, video sequences
+                                            and texts.
+                                            All brand names and trademarks mentioned on the website and possibly
+                                            protected by third parties are subject without restriction to the provisions
+                                            of the applicable trademark law and the ownership rights of the respective
+                                            registered owners. The mere mention of a trademark does not imply that it is
+                                            not protected by the rights of third parties!
+                                            The copyright for published objects created by the author himself remains
+                                            solely with the author of the pages. Any duplication or use of objects such
+                                            as diagrams, sounds or texts in other electronic or printed publications is
+                                            not permitted without the author's agreement.
+                                        </p>
+                                    </div>
+
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            4. legal validity of this disclaimer
+                                        </p>
+                                    </div>
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            This disclaimer is to be regarded as part of the internet publication which
+                                            you were referred from. If sections or individual terms of this statement
+                                            are not legal or correct, the content or validity of the other parts remain
+                                            uninfluenced by this fact.
+                                        </p>
+                                    </div>
+
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            5. EU consumer arbitration
+                                        </p>
+                                    </div>
+                                    <div class="flex-column">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            Platform of the EU Commission for online dispute resolution:
+                                        </p>
+                                    </div>
+                                    <div class="flex-column">
+                                        <a href="http://ec.europa.eu/consumers/odr/"
+                                           class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+
+                                        </a>
+                                    </div>
+                                    <div class="flex-column mt-5">
+                                        <p class="form-label inline-block mb-2 text-white font-medium text-xs leading-tight ">
+                                            We are neither obliged nor willing to participate in dispute resolution
+                                            proceedings before a consumer arbitration board.
+                                        </p>
+                                    </div>
+
+                                </section>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </section>
+
+            <footer class="flex flex-wrap content-center w-full min-h-[15vh] bg-[#272B27] p-[5%]">
+
+                <div class="flex justify-center items-center lg:justify-between p-6 border-b border-[#23ce6b]">
+
+                    <div class="mr-12 hidden lg:block">
+                        <div class="mx-6 py-10 text-center md:text-left">
+                            <div class="grid grid-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                                <div class="">
+                                    <h6 class="
+            uppercase
+            font-semibold
+            mb-4
+            flex
+            items-center
+            justify-center
+            md:justify-start
+          "> Contact
+
+                                    </h6>
+                                    <p class="mb-4">
+                                        <a href="mailto:service@3dps.space"
+                                           class="text-gray-600 underline-offset-2 hover:text-[#23ce6b] hover:underline ">service@3dps.space</a>
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="
+            uppercase
+            font-semibold
+            mb-4
+            flex
+            items-center
+            justify-center
+            md:justify-start
+          "> Info
+
+                                    </h6>
+                                    <p class="mb-4">
+                                        <a href="/legal"
+                                           class="text-gray-600 underline-offset-2 hover:text-[#23ce6b] hover:underline ">Legal
+                                            notice</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </footer>
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+

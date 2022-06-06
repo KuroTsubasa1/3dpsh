@@ -1,3 +1,7 @@
 index:
     path: /
     controller: App\Controller\HomepageController::index
+
+legal:
+    path: /legal
+    controller: App\Controller\HomepageController::legal
