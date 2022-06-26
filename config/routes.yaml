@@ -5,3 +5,7 @@ index:
 legal:
     path: /legal
     controller: App\Controller\HomepageController::legal
+
+api:
+    path : /api
+    controller: App\Controller\VueApiController::index
