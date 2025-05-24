@@ -1,15 +1,6 @@
 <template>
   <div id="app">
-    <TheHeader />
-    <main>
-      <TheHero />
-      <TheIntro />
-      <TheServices />
-      <ThePortfolio />
-      <TheAbout />
-      <TheContact />
-    </main>
-    <TheFooter />
+    <NuxtPage />
   </div>
 </template>
 

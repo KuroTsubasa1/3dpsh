@@ -1,0 +1,24 @@
+# 3D Print Shop Harm - robots.txt
+# https://3dps.space
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_nuxt/
+
+# Sitemap
+Sitemap: https://3dps.space/sitemap.xml
+
+# Crawl-delay für höfliches Crawling
+Crawl-delay: 1
+
+# Spezielle Regeln für Googlebot
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Spezielle Regeln für Bingbot
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
