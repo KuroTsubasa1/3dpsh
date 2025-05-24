@@ -94,7 +94,7 @@
             </div>
             <div>
               <h4>E-Mail</h4>
-              <p>info@3dprintshopharm.de</p>
+              <p><a href="mailto:service@3dps.space" style="color: inherit; text-decoration: none;">service@3dps.space</a></p>
             </div>
           </div>
         </div>

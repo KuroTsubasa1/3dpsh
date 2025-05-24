@@ -1,4 +1,4 @@
-<template>
+ <template>
   <section id="services" class="services">
     <div class="container">
       <div class="section-title">
@@ -65,12 +65,27 @@
             <ul>
               <li><strong>Maximale Bauteildimensionen:</strong> 400 x 400 x 450 mm</li>
               <li><strong>Materialien:</strong> PLA, PETG, TPU und weitere</li>
-              <li><strong>Kosten:</strong> Ab 20€ pro Druckstunde</li>
+              <li><strong>Kosten:</strong> Ab 12,50€ pro Druckstunde</li>
             </ul>
           </div>
         </div>
         
         <div class="service-detail reverse">
+          <div class="detail-image">
+            <img src="https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/c2mnrfiarlzsif1/20230925_150354_hTW3ZeTxPw.jpg" alt="Resin Druck Beispiel">
+          </div>
+          <div class="detail-content">
+            <h4>💎 Resin 3D-Druck im Detail</h4>
+            <p><strong>Prozess:</strong> Mit unseren hochpräzisen Resin-Druckern erstellen wir detailgetreue Modelle mit glatten Oberflächen. Ideal für Miniaturen, Schmuck und filigrane Bauteile.</p>
+            <ul>
+              <li><strong>Maximale Bauteildimensionen:</strong> 130 x 80 x 150 mm</li>
+              <li><strong>Materialien:</strong> Standard-, Tough- und flexible Resins</li>
+              <li><strong>Kosten:</strong> Ab 15€ pro Druckstunde</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="service-detail">
           <div class="detail-image">
             <img src="https://pocket.lasseharm.space/api/files/679z7gj3r5etrhr/h00ohg0jbjtc3ac/cad_showcase_RCpNLgOfur.PNG" alt="CAD Modellierung">
           </div>
@@ -80,7 +95,7 @@
             <ul>
               <li><strong>Software:</strong> Professionelle CAD-Tools</li>
               <li><strong>Komplexität:</strong> Von einfach bis hochkomplex</li>
-              <li><strong>Kosten:</strong> Ab 50€ pro Stunde</li>
+              <li><strong>Kosten:</strong> Ab 30€ pro Stunde</li>
             </ul>
           </div>
         </div>
@@ -95,7 +110,7 @@
             <ul>
               <li><strong>Maximale Größe:</strong> 2000mm x 2000mm x 2000mm</li>
               <li><strong>Präzision:</strong> Höchste Detailgenauigkeit</li>
-              <li><strong>Kosten:</strong> Ab 100€ pro Scan</li>
+              <li><strong>Kosten:</strong> Ab 15€ pro Druckstunde</li>
             </ul>
           </div>
         </div>

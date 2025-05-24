@@ -7,6 +7,9 @@
       <TheServices />
       <TheEtsyShop />
       <ThePortfolio />
+      <TheTestimonials />
+      <PricingCalculator />
+      <TheFAQ />
       <TheAbout />
       <TheContact />
     </main>
