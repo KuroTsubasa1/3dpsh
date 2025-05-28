@@ -1,4 +1,4 @@
-<template>
+Use <template>
   <nav class="navbar">
     <div class="container">
       <div class="navbar-container">
@@ -13,14 +13,14 @@
         </a>
         
         <ul class="nav-menu" :class="{ active: menuOpen }">
-          <li><a href="#home" class="nav-link" @click="closeMenu">Start</a></li>
-          <li><a href="#services" class="nav-link" @click="closeMenu">Leistungen</a></li>
-          <li><a href="#etsy" class="nav-link" @click="closeMenu">Shop</a></li>
-          <li><a href="#portfolio" class="nav-link" @click="closeMenu">Portfolio</a></li>
-          <li><a href="#pricing-calculator" class="nav-link" @click="closeMenu">Preise</a></li>
-          <li><a href="#faq" class="nav-link" @click="closeMenu">FAQ</a></li>
-          <li><a href="#about" class="nav-link" @click="closeMenu">Über uns</a></li>
-          <li><a href="#contact" class="nav-link" @click="closeMenu">Kontakt</a></li>
+          <li><NuxtLink to="/" class="nav-link" @click="closeMenu">Start</NuxtLink></li>
+          <li><a href="/#services" class="nav-link" @click="closeMenu">Leistungen</a></li>
+          <li><a href="/#etsy" class="nav-link" @click="closeMenu">Shop</a></li>
+          <li><NuxtLink to="/portfolio" class="nav-link" @click="closeMenu">Portfolio</NuxtLink></li>
+          <li><a href="/#pricing-calculator" class="nav-link" @click="closeMenu">Preise</a></li>
+          <li><a href="/#faq" class="nav-link" @click="closeMenu">FAQ</a></li>
+          <li><a href="/#about" class="nav-link" @click="closeMenu">Über uns</a></li>
+          <li><a href="/#contact" class="nav-link" @click="closeMenu">Kontakt</a></li>
         </ul>
         
         <button class="menu-toggle" @click="toggleMenu">
