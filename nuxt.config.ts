@@ -103,8 +103,8 @@ export default defineNuxtConfig({
         }
       ]
     },
-    // Add a unique build ID to force browser to load new assets on each server restart
-    buildAssetsDir: `/_nuxt/${new Date().getTime()}/`,
+    // Use a consistent build assets directory
+    buildAssetsDir: '/_nuxt/',
     pageTransition: false,
     layoutTransition: false
   },
@@ -112,46 +112,71 @@ export default defineNuxtConfig({
   css: [
     '@/assets/css/modern.css'
   ],
-  // Disable client-side caching during development
+  // Production build configuration
   vite: {
     server: {
       hmr: {
         protocol: 'ws'
-      },
-      headers: {
-        'Cache-Control': 'no-store',
-        'Pragma': 'no-cache',
-        'Expires': '0'
       }
     },
     build: {
-      // Ensure unique file hashes
+      // Production build optimizations
       rollupOptions: {
         output: {
-          entryFileNames: `assets/[name]-[hash]-${new Date().getTime()}.js`,
-          chunkFileNames: `assets/[name]-[hash]-${new Date().getTime()}.js`,
-          assetFileNames: `assets/[name]-[hash]-${new Date().getTime()}.[ext]`
-        }
-      }
+          entryFileNames: 'assets/[name]-[hash].js',
+          chunkFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: 'assets/[name]-[hash].[ext]',
+          // Bundle everything into single files to avoid module resolution issues
+          manualChunks: undefined
+        },
+        // Bundle all dependencies
+        external: []
+      },
+      // Force all modules to be bundled
+      minify: 'esbuild',
+      target: 'esnext'
+    },
+    // Force bundling of all modules
+    ssr: {
+      noExternal: true
+    },
+    optimizeDeps: {
+      include: ['vue', '@vue/runtime-core', '@vue/runtime-dom']
     }
   },
-  // Disable persistent cache
+  // Production build configuration
   nitro: {
     esbuild: {
       options: {
         target: 'esnext'
       }
     },
+    // Bundle all dependencies to avoid external path issues
+    externals: {
+      inline: [
+        // Force bundling of development dependencies
+        '@nuxt/vite-builder',
+        'vite-node'
+      ]
+    },
+    // Disable development features in production
+    experimental: {
+      wasm: false
+    },
+    // Proper static asset handling
+    publicAssets: [
+      {
+        baseURL: '/',
+        dir: 'public'
+      }
+    ],
+    // Production optimizations
+    minify: true,
+    sourceMap: false,
     storage: {
       fs: {
         driver: 'fs',
         base: './.nuxt/cache'
-      }
-    },
-    devStorage: {
-      // Disable persistent caching
-      cache: {
-        driver: 'memory'
       }
     }
   }

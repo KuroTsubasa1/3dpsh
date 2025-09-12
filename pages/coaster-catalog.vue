@@ -1,42 +1,41 @@
 <template>
-  <div class="container">
-    <header class="header">
-      <h1>Coaster Catalog</h1>
-      <p>3D Print Shop Harm</p>
-    </header>
+  <div>
+    <div class="container">
+      <header class="header">
+        <h1>Coaster Catalog</h1>
+        <p>3D Print Shop Harm</p>
+      </header>
 
-
-    <div class="catalog-grid">
-      <template v-for="(franchise, franchiseIndex) in franchises" :key="franchise.name">
-        <div class="franchise-divider">
-          <h2>{{ franchise.displayName }}</h2>
-          <div class="franchise-count">{{ franchise.coasters.length }} coasters</div>
-        </div>
-        
-        <div
-          v-for="(coaster, coasterIndex) in franchise.coasters"
-          :key="`${franchise.name}-${coasterIndex}`"
-          class="coaster-card"
-        >
-          <div class="coaster-number">#{{ coaster.number }}</div>
-          <div class="coaster-image">
-            <img 
-              :src="coaster.image" 
-              :alt="coaster.name"
-              @error="handleImageError"
-            />
+      <div class="catalog-grid">
+        <template v-for="(franchise, franchiseIndex) in franchises" :key="franchise.name">
+          <div class="franchise-divider">
+            <h2>{{ franchise.displayName }}</h2>
+            <div class="franchise-count">{{ franchise.coasters.length }} coasters</div>
           </div>
-          <div class="coaster-info">
-            <h3 class="coaster-name">{{ coaster.name }}</h3>
-            <p class="coaster-description">{{ coaster.description }}</p>
+          
+          <div
+            v-for="(coaster, coasterIndex) in franchise.coasters"
+            :key="`${franchise.name}-${coasterIndex}`"
+            class="coaster-card"
+          >
+            <div class="coaster-number">#{{ coaster.number }}</div>
+            <div class="coaster-image">
+              <img 
+                :src="coaster.image" 
+                :alt="coaster.name"
+                @error="handleImageError"
+              />
+            </div>
+            <div class="coaster-info">
+              <h3 class="coaster-name">{{ coaster.name }}</h3>
+              <p class="coaster-description">{{ coaster.description }}</p>
+            </div>
           </div>
-        </div>
-      </template>
+        </template>
+      </div>
     </div>
-
-    <footer class="footer">
-      <p>&copy; 2025 Coaster Catalog. All rights reserved.</p>
-    </footer>
+    
+    <TheFooter />
   </div>
 </template>
 
@@ -278,7 +277,7 @@ function generateCoasterData() {
       number: number,
       name: `Coaster #${number}`,
       date: date,
-      image: `/coaster_catalog/images/${filePath}`,
+      image: `/coaster-images/${filePath}`,
       description: ''
     });
   });
@@ -292,7 +291,11 @@ function handleImageError(event) {
 }
 
 onMounted(() => {
+  console.log('Component mounted, generating coaster data...');
+  console.log('Total image files:', ALL_IMAGE_FILES.length);
   generateCoasterData();
+  console.log('Generated franchises:', franchises.value.length);
+  console.log('Total coasters:', totalCoasters.value);
 });
 
 useHead({
@@ -459,13 +462,6 @@ useHead({
   margin-top: 0.5rem;
 }
 
-.footer {
-  text-align: center;
-  padding: 2rem 0;
-  color: var(--text-muted);
-  border-top: 1px solid var(--accent-dark);
-  margin-top: 3rem;
-}
 
 @media (max-width: 768px) {
   .container {

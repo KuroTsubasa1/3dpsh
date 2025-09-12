@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#e5e7eb"/>
+  <text x="200" y="150" text-anchor="middle" fill="#6b7280" font-size="20" font-family="Arial">Portfolio 5</text>
+</svg>
