@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <NuxtPage />
-    <WhatsAppButton />
-    <CookieConsent />
-    <BackToTop />
+    <ClientOnly>
+      <WhatsAppButton />
+      <CookieConsent />
+      <BackToTop />
+    </ClientOnly>
   </div>
 </template>
 
