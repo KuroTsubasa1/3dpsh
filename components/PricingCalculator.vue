@@ -304,12 +304,32 @@ const totalCost = computed(() => {
   font-size: 1.5rem;
 }
 
+.disclaimer-box {
+  background: var(--gray-50, #f8f9fa);
+  border: 1px solid var(--gray-200, #e9ecef);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
 .disclaimer {
   font-size: 0.85rem;
-  color: var(--gray-600);
+  color: var(--gray-600, #6c757d);
   line-height: 1.5;
-  margin: 1rem 0 1.5rem;
-  font-style: italic;
+  margin: 0 0 1rem;
+}
+
+.disclaimer-list {
+  list-style: disc;
+  padding-left: 1.5rem;
+  color: var(--gray-600, #6c757d);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 1rem 0;
+}
+
+.disclaimer-list li {
+  margin: 0.25rem 0;
 }
 
 @media (max-width: 768px) {

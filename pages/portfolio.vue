@@ -485,26 +485,37 @@ useHead({
   color: #2c3e50;
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 768px) {
   .hero-buttons {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .hero-buttons .btn {
     width: 100%;
     max-width: 250px;
   }
-  
+
   .portfolio-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .modal-content img {
     height: 250px;
   }
-  
+
   .filter-btn {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
