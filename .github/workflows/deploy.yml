@@ -61,18 +61,20 @@ jobs:
             -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" \
             ./ecosystem.config.js "${SSH_USER}@${SSH_HOST}:${APP_DIR}/"
 
-      - name: Provision nginx + TLS (certbot)
+      - name: Provision nginx vhost
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
-          CERTBOT_EMAIL: ${{ vars.CERTBOT_EMAIL }}
         run: |
+          # Ship the vhost + provisioning script to a staging dir, then run it.
+          # It only syncs nginx config — the TLS certificate is owned by the
+          # server's certbot timer, never issued from here (see DEPLOYMENT.md).
           rsync -avz \
             -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" \
             ./deploy/ "${SSH_USER}@${SSH_HOST}:/tmp/3dpsh-deploy/"
           ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
             "${SSH_USER}@${SSH_HOST}" \
-            "CERTBOT_EMAIL='${CERTBOT_EMAIL}' bash /tmp/3dpsh-deploy/provision.sh"
+            "bash /tmp/3dpsh-deploy/provision.sh"
 
       - name: Restart app (PM2)
         env:
@@ -82,15 +84,15 @@ jobs:
           ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
             "${SSH_USER}@${SSH_HOST}" bash -s <<EOF
           set -euo pipefail
-          # Non-interactive SSH gets a minimal PATH; make sure a globally or
-          # nvm-installed pm2 is findable before using it.
-          export PATH="\$PATH:/usr/local/bin:/usr/bin"
-          # A test-and-source one-liner would abort the script under 'set -e'
-          # when the file is absent, so guard with a real if.
-          if [ -s "\$HOME/.nvm/nvm.sh" ]; then . "\$HOME/.nvm/nvm.sh"; fi
           cd "${APP_DIR}"
-          pm2 startOrRestart ecosystem.config.js --update-env
-          pm2 save
+          # The app lives in *root's* PM2 daemon — pm2-root.service is what
+          # resurrects it after a reboot — so the deploy user has to reach it
+          # via sudo -H. Without -H, pm2 would read PM2_HOME from the deploy
+          # user's HOME, spawn a second daemon under /home/deploy/.pm2, and
+          # start a rival process fighting for port ${APP_PORT}.
+          # Absolute path: non-interactive SSH gets a minimal PATH.
+          sudo -H /usr/bin/pm2 startOrRestart ecosystem.config.js --update-env
+          sudo -H /usr/bin/pm2 save
           EOF
 
       - name: Smoke test

@@ -6,84 +6,57 @@ Deployment runs in CI. On every push to `master` (or a manual run of the
 1. builds the Nuxt app (`npm ci && npm run build`),
 2. rsyncs the self-contained `.output/` bundle plus `ecosystem.config.js` to
    `/opt/3dpsh` on the server,
-3. runs [`deploy/provision.sh`](deploy/provision.sh) there, which installs the
-   nginx vhost and — on the very first deploy — obtains the Let's Encrypt
-   certificate (http-01 challenge), then reloads nginx,
-4. restarts the app under PM2 (`pm2 startOrRestart ecosystem.config.js`),
+3. runs [`deploy/provision.sh`](deploy/provision.sh) there, which syncs the nginx
+   vhost and reloads nginx,
+4. restarts the app under PM2,
 5. smoke-tests `http://127.0.0.1:5001/` on the server and `https://3dps.space/`
    from the runner, failing the deploy if either does not answer.
 
 `.output/` is a complete Nitro bundle with dependencies inlined, so there is no
 `npm install` step on the server.
 
-The app listens on **port 5001** (`ecosystem.config.js`); nginx reverse-proxies
-`3dps.space` and `www.3dps.space` to it (`deploy/nginx/3dpsh.conf`).
+## The production host
+
+`3dps.space` runs on a **shared** DigitalOcean droplet that also hosts mailcow,
+gitea, katachi, ukibori, tanzaku, Nextcloud and a dozen other vhosts. Facts that
+matter when touching this deploy:
+
+| | |
+| --- | --- |
+| App port | **5001** (`ecosystem.config.js`). Port 3000 on this box belongs to gitea — do not move the app there. |
+| App directory | `/opt/3dpsh`, owned by `deploy`. Also contains an unrelated `homepage/` directory and old `.output.backup.*` dirs — the pipeline only touches `.output/` and `ecosystem.config.js`. |
+| Process manager | PM2 under **root** (`pm2-root.service` resurrects it on boot). The deploy user reaches that daemon with `sudo -H /usr/bin/pm2`; without `-H` pm2 would start a second daemon under `/home/deploy/.pm2` and fight for port 5001. |
+| TLS | Certificate lineage **`3dps.space-0001`** (not `3dps.space`), renewed by the certbot timer with `authenticator = standalone`. `provision.sh` never calls certbot — issuing from CI would create a `-0002` lineage that nothing renews. |
+| nginx | `deploy` is in the `nginx-editors` group and has passwordless sudo. |
 
 ## GitHub repo configuration
 
 Secrets (Settings → Secrets and variables → Actions), in the `production`
-environment or at repo level:
+environment:
 
-| Secret            | Purpose                                                                        |
+| Secret            | Value                                                                          |
 | ----------------- | ------------------------------------------------------------------------------ |
-| `SSH_PRIVATE_KEY` | Private key whose public half is in the deploy user's `~/.ssh/authorized_keys` |
-| `SSH_HOST`        | Server hostname or IP                                                          |
-| `SSH_USER`        | SSH/deploy user                                                                |
-
-Variables (optional):
-
-| Variable        | Purpose                                                                                      |
-| --------------- | -------------------------------------------------------------------------------------------- |
-| `CERTBOT_EMAIL` | Email for Let's Encrypt expiry notices. Defaults to `lasse.harm@di-unternehmer.com` if unset. |
+| `SSH_PRIVATE_KEY` | Private key whose public half is in `/home/deploy/.ssh/authorized_keys`        |
+| `SSH_HOST`        | `46.101.138.222`                                                               |
+| `SSH_USER`        | `deploy`                                                                       |
 
 ## One-time server setup
 
-The pipeline installs the nginx vhost and obtains the certificate itself. Only
-these prerequisites are manual:
+Already satisfied on the current host; documented for a rebuild.
 
-### 1. DNS
-
-`3dps.space` and `www.3dps.space` must resolve to the server **before** the
-first deploy, or the http-01 challenge fails.
-
-### 2. Install nginx, certbot, Node and PM2
-
-```bash
-sudo apt update
-sudo apt install -y nginx certbot
-# Node 20 + PM2, if not already present
-sudo npm install -g pm2
-```
-
-### 3. Create the app directory, owned by the deploy user
-
-```bash
-sudo mkdir -p /opt/3dpsh
-sudo chown "$USER":"$USER" /opt/3dpsh
-sudo chmod 755 /opt/3dpsh
-```
-
-### 4. Add the deploy key
-
-Put the public half of `SSH_PRIVATE_KEY` into the deploy user's
-`~/.ssh/authorized_keys` ([`setup-ssh-key.sh`](setup-ssh-key.sh) prints a key you
-can use).
-
-### 5. Passwordless sudo (only if the deploy user is not root)
-
-`provision.sh` runs `certbot`, `nginx` and `systemctl` over a non-interactive
-SSH session. Create `/etc/sudoers.d/3dpsh-deploy` (replace `DEPLOY_USER`):
-
-```
-DEPLOY_USER ALL=(root) NOPASSWD: /usr/bin/certbot, /usr/sbin/nginx, /bin/systemctl reload nginx, /bin/mkdir, /bin/cp, /bin/ln, /bin/rm, /usr/bin/tee
-```
-
-### 6. Make PM2 survive reboots
-
-```bash
-pm2 startup   # then run the command it prints
-pm2 save
-```
+1. **DNS** — `3dps.space` and `www.3dps.space` resolve to the server.
+2. **Packages** — nginx, certbot, Node 20, PM2 (`/usr/bin/pm2`).
+3. **App directory** — `/opt/3dpsh`, plus `.output/` and `ecosystem.config.js`,
+   owned by `deploy`; the directory itself `755`.
+4. **Deploy key** — public half of `SSH_PRIVATE_KEY` in
+   `/home/deploy/.ssh/authorized_keys` (mode `600`, owned by `deploy`).
+5. **Passwordless sudo** — `deploy` needs it for `nginx -t`,
+   `systemctl reload nginx` and `sudo -H pm2`. On this host
+   `/etc/sudoers.d/deploy` grants `NOPASSWD: ALL`.
+6. **Reboot persistence** — `pm2 save` as root, with `pm2-root.service` enabled.
+7. **Certificate** — a valid lineage in `/etc/letsencrypt/live/`; if the name is
+   not `3dps.space-0001`, update `CERT_LINEAGE` in `provision.sh` and the
+   `ssl_certificate` paths in `deploy/nginx/3dpsh.conf`.
 
 ## Triggering a deploy
 
@@ -100,21 +73,26 @@ The previous process was a local `npm run build`, `tar`, `scp` and a hand-run
 deploy:
 
 - `/etc/nginx/sites-enabled/3dpsh` (the old extension-less vhost) is removed by
-  `provision.sh` and replaced by `3dpsh.conf` — the repo file is now the source
-  of truth, so edit `deploy/nginx/3dpsh.conf` and push instead of editing on the
+  `provision.sh` and replaced by `3dpsh.conf`. The repo file is now the source of
+  truth — edit `deploy/nginx/3dpsh.conf` and push instead of editing on the
   server.
-- The old vhost proxied to port 3000 while PM2 serves 5001; the new one uses
-  5001 consistently.
+- The stale root-level `nginx-site.conf` proxied to port 3000 and is gone.
 - Don't keep anything else in `/opt/3dpsh/.output` — it is rsynced with
   `--delete`.
+
+Left over from the manual era and safe to delete by hand (≈900 MB in
+`/opt/3dpsh`): 25 `.output.backup.*` directories, `deployment.tar.gz` (33 MB),
+`node_modules/`, the `._*` AppleDouble files, and the stray `coaster-catalog.vue`
+/ `pages/` / `assets/` copies. The pipeline needs none of them.
 
 ## Troubleshooting
 
 ```bash
-pm2 status
-pm2 logs 3dpsh --lines 100
+sudo -H pm2 status
+sudo -H pm2 logs 3dpsh --lines 100
 sudo tail -f /var/log/nginx/error.log
 sudo nginx -t
 ss -tlnp | grep 5001
 curl -fsS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:5001/
+sudo certbot certificates          # confirm the lineage name
 ```
