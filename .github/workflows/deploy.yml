@@ -1,0 +1,110 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Prevent overlapping deploys; let the latest one win.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+env:
+  APP_DIR: /opt/3dpsh
+  APP_PORT: '5001'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Nuxt app
+        run: npm run build
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Upload build output
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          # .output is a self-contained Nitro bundle (deps included), so nothing
+          # needs installing on the server. --delete keeps it an exact mirror so
+          # stale hashed chunks from previous builds don't pile up.
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" \
+            ./.output/ "${SSH_USER}@${SSH_HOST}:${APP_DIR}/.output/"
+
+          rsync -avz \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" \
+            ./ecosystem.config.js "${SSH_USER}@${SSH_HOST}:${APP_DIR}/"
+
+      - name: Provision nginx + TLS (certbot)
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          CERTBOT_EMAIL: ${{ vars.CERTBOT_EMAIL }}
+        run: |
+          rsync -avz \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" \
+            ./deploy/ "${SSH_USER}@${SSH_HOST}:/tmp/3dpsh-deploy/"
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+            "${SSH_USER}@${SSH_HOST}" \
+            "CERTBOT_EMAIL='${CERTBOT_EMAIL}' bash /tmp/3dpsh-deploy/provision.sh"
+
+      - name: Restart app (PM2)
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+            "${SSH_USER}@${SSH_HOST}" bash -s <<EOF
+          set -euo pipefail
+          # Non-interactive SSH gets a minimal PATH; make sure a globally or
+          # nvm-installed pm2 is findable before using it.
+          export PATH="\$PATH:/usr/local/bin:/usr/bin"
+          # A test-and-source one-liner would abort the script under 'set -e'
+          # when the file is absent, so guard with a real if.
+          if [ -s "\$HOME/.nvm/nvm.sh" ]; then . "\$HOME/.nvm/nvm.sh"; fi
+          cd "${APP_DIR}"
+          pm2 startOrRestart ecosystem.config.js --update-env
+          pm2 save
+          EOF
+
+      - name: Smoke test
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          # Hit the app directly on the server: a failure here means the deploy
+          # is broken even if nginx still serves a cached page.
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+            "${SSH_USER}@${SSH_HOST}" \
+            "for i in \$(seq 1 15); do curl -fsS -o /dev/null http://127.0.0.1:${APP_PORT}/ && exit 0; sleep 2; done; exit 1"
+          curl -fsS -o /dev/null https://3dps.space/
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

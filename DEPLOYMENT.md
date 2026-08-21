@@ -1,131 +1,120 @@
-# Deployment Guide for 3D Print Shop Harm Website
+# Deployment — 3D Print Shop Harm (3dps.space)
 
-## Prerequisites
-- SSH access to server: root@46.101.138.222
-- Node.js installed on server
-- PM2 installed on server
-- Nginx installed on server
+Deployment runs in CI. On every push to `master` (or a manual run of the
+**Deploy** workflow), [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml):
 
-## Step 1: Build the application locally
+1. builds the Nuxt app (`npm ci && npm run build`),
+2. rsyncs the self-contained `.output/` bundle plus `ecosystem.config.js` to
+   `/opt/3dpsh` on the server,
+3. runs [`deploy/provision.sh`](deploy/provision.sh) there, which installs the
+   nginx vhost and — on the very first deploy — obtains the Let's Encrypt
+   certificate (http-01 challenge), then reloads nginx,
+4. restarts the app under PM2 (`pm2 startOrRestart ecosystem.config.js`),
+5. smoke-tests `http://127.0.0.1:5001/` on the server and `https://3dps.space/`
+   from the runner, failing the deploy if either does not answer.
+
+`.output/` is a complete Nitro bundle with dependencies inlined, so there is no
+`npm install` step on the server.
+
+The app listens on **port 5001** (`ecosystem.config.js`); nginx reverse-proxies
+`3dps.space` and `www.3dps.space` to it (`deploy/nginx/3dpsh.conf`).
+
+## GitHub repo configuration
+
+Secrets (Settings → Secrets and variables → Actions), in the `production`
+environment or at repo level:
+
+| Secret            | Purpose                                                                        |
+| ----------------- | ------------------------------------------------------------------------------ |
+| `SSH_PRIVATE_KEY` | Private key whose public half is in the deploy user's `~/.ssh/authorized_keys` |
+| `SSH_HOST`        | Server hostname or IP                                                          |
+| `SSH_USER`        | SSH/deploy user                                                                |
+
+Variables (optional):
+
+| Variable        | Purpose                                                                                      |
+| --------------- | -------------------------------------------------------------------------------------------- |
+| `CERTBOT_EMAIL` | Email for Let's Encrypt expiry notices. Defaults to `lasse.harm@di-unternehmer.com` if unset. |
+
+## One-time server setup
+
+The pipeline installs the nginx vhost and obtains the certificate itself. Only
+these prerequisites are manual:
+
+### 1. DNS
+
+`3dps.space` and `www.3dps.space` must resolve to the server **before** the
+first deploy, or the http-01 challenge fails.
+
+### 2. Install nginx, certbot, Node and PM2
+
 ```bash
-npm run build
+sudo apt update
+sudo apt install -y nginx certbot
+# Node 20 + PM2, if not already present
+sudo npm install -g pm2
 ```
 
-## Step 2: Create deployment archive
+### 3. Create the app directory, owned by the deploy user
+
 ```bash
-tar -czf 3dpsh-deploy.tar.gz \
-  .output \
-  ecosystem.config.js \
-  package.json \
-  package-lock.json \
-  public \
-  nuxt.config.ts
+sudo mkdir -p /opt/3dpsh
+sudo chown "$USER":"$USER" /opt/3dpsh
+sudo chmod 755 /opt/3dpsh
 ```
 
-## Step 3: Upload to server
-```bash
-scp 3dpsh-deploy.tar.gz root@46.101.138.222:/tmp/
+### 4. Add the deploy key
+
+Put the public half of `SSH_PRIVATE_KEY` into the deploy user's
+`~/.ssh/authorized_keys` ([`setup-ssh-key.sh`](setup-ssh-key.sh) prints a key you
+can use).
+
+### 5. Passwordless sudo (only if the deploy user is not root)
+
+`provision.sh` runs `certbot`, `nginx` and `systemctl` over a non-interactive
+SSH session. Create `/etc/sudoers.d/3dpsh-deploy` (replace `DEPLOY_USER`):
+
 ```
-Password: #3uVbH3r0Kq!
-
-## Step 4: SSH into server
-```bash
-ssh root@46.101.138.222
+DEPLOY_USER ALL=(root) NOPASSWD: /usr/bin/certbot, /usr/sbin/nginx, /bin/systemctl reload nginx, /bin/mkdir, /bin/cp, /bin/ln, /bin/rm, /usr/bin/tee
 ```
-Password: #3uVbH3r0Kq!
 
-## Step 5: Deploy on server
-Run these commands on the server:
+### 6. Make PM2 survive reboots
 
 ```bash
-# Navigate to opt directory
-cd /opt
-
-# Create app directory
-mkdir -p 3dpsh
-cd 3dpsh
-
-# Extract deployment
-tar -xzf /tmp/3dpsh-deploy.tar.gz
-
-# Install production dependencies
-npm install --production
-
-# Stop existing PM2 process if any
-pm2 stop 3dpsh 2>/dev/null || true
-pm2 delete 3dpsh 2>/dev/null || true
-
-# Start with PM2
-pm2 start ecosystem.config.js
+pm2 startup   # then run the command it prints
 pm2 save
-pm2 startup
-
-# Clean up
-rm /tmp/3dpsh-deploy.tar.gz
 ```
 
-## Step 6: Configure Nginx
-Create nginx configuration file:
+## Triggering a deploy
 
-```bash
-nano /etc/nginx/sites-available/3dpsh
-```
+- Push to `master`, or
+- run the **Deploy** workflow from the Actions tab (`workflow_dispatch`).
 
-Add this configuration:
-```nginx
-server {
-    server_name 3dps.space www.3dps.space;
+Deploys are serialized by a `deploy-production` concurrency group; a newer run
+cancels an in-flight one.
 
-    location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
+## Migrating from the old manual flow
 
-    # Gzip compression
-    gzip on;
-    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml application/javascript;
-    gzip_vary on;
+The previous process was a local `npm run build`, `tar`, `scp` and a hand-run
+`pm2` restart, with the nginx vhost edited on the server. After the first CI
+deploy:
 
-    # Security headers
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-
-    listen 80;
-}
-```
-
-## Step 7: Enable site and reload Nginx
-```bash
-# Enable site
-ln -s /etc/nginx/sites-available/3dpsh /etc/nginx/sites-enabled/
-
-# Test nginx config
-nginx -t
-
-# Reload nginx
-systemctl reload nginx
-```
-
-## Step 8: Setup SSL with Let's Encrypt
-```bash
-certbot --nginx -d 3dps.space -d www.3dps.space
-```
-
-## Step 9: Verify deployment
-- Check PM2 status: `pm2 status`
-- Check logs: `pm2 logs 3dpsh`
-- Visit http://3dps.space
+- `/etc/nginx/sites-enabled/3dpsh` (the old extension-less vhost) is removed by
+  `provision.sh` and replaced by `3dpsh.conf` — the repo file is now the source
+  of truth, so edit `deploy/nginx/3dpsh.conf` and push instead of editing on the
+  server.
+- The old vhost proxied to port 3000 while PM2 serves 5001; the new one uses
+  5001 consistently.
+- Don't keep anything else in `/opt/3dpsh/.output` — it is rsynced with
+  `--delete`.
 
 ## Troubleshooting
-- Check PM2 logs: `pm2 logs 3dpsh --lines 100`
-- Check Nginx logs: `tail -f /var/log/nginx/error.log`
-- Restart PM2: `pm2 restart 3dpsh`
-- Check port 3000: `netstat -tlnp | grep 3000`
+
+```bash
+pm2 status
+pm2 logs 3dpsh --lines 100
+sudo tail -f /var/log/nginx/error.log
+sudo nginx -t
+ss -tlnp | grep 5001
+curl -fsS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:5001/
+```
