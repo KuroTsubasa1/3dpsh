@@ -85,12 +85,10 @@ export default defineNuxtConfig({
               "latitude": 54.1539146,
               "longitude": 10.6172643
             },
-            "openingHoursSpecification": {
-              "@type": "OpeningHoursSpecification",
-              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-              "opens": "09:00",
-              "closes": "18:00"
-            },
+            // No openingHoursSpecification on purpose: there are no fixed opening
+            // hours, visits happen by appointment only (see TheContact.vue).
+            // Declaring hours here would make Google show them anyway.
+            "openingHours": "Nach Terminabsprache",
             "sameAs": [
               "https://www.instagram.com/3d.print.shop.harm",
               "https://www.facebook.com/profile.php?id=61551244577763",

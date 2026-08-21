@@ -97,6 +97,15 @@
               <p><a href="mailto:service@3dps.space" style="color: inherit; text-decoration: none;">service@3dps.space</a></p>
             </div>
           </div>
+
+          <div class="opening-notice">
+            <h4>Wichtiger Hinweis</h4>
+            <p>
+              Um uns optimal auf Ihre Projekte konzentrieren zu können, haben wir keine festen
+              Öffnungszeiten. Besuche und Beratung vor Ort finden ausschließlich nach vorheriger
+              Terminabsprache statt.
+            </p>
+          </div>
         </div>
       </div>
       
@@ -167,3 +176,24 @@ const handleSubmit = async () => {
   }
 }
 </script>
+
+<style scoped>
+.opening-notice {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--gray-100);
+  border-left: 4px solid var(--primary-color);
+  border-radius: var(--border-radius);
+}
+
+.opening-notice h4 {
+  margin: 0 0 0.5rem;
+  color: var(--text-dark);
+}
+
+.opening-notice p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+</style>
