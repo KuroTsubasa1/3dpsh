@@ -134,9 +134,16 @@ Von zehn Abschnitten auf sieben. Tiefe wandert auf Unterseiten.
 Etsy bleibt die Kasse; der Katalog wird die durchsuchbare Übersicht und
 verlinkt pro Motiv dorthin.
 
-**Ausgangslage:** `pages/coaster-catalog.vue` enthält eine hartcodierte Liste
-von 379 Bildpfaden in 12 Fandom-Ordnern und nummeriert Motive durch. Es gibt
-keine Titel, keine Preise, keine Links — die Dateinamen sind Hashes.
+**Ausgangslage — korrigiert am 2026-08-25:** Die Route `/coaster-catalog` wird
+von einer **statischen Datei** `public/coaster-catalog/index.html` beschattet,
+lokal wie live (das ausgelieferte HTML trägt `lang="en"` und kein `__NUXT__`).
+`pages/coaster-catalog.vue` — 484 Zeilen mit 379 hartcodierten Bildpfaden — ist
+damit **nie erreichbar gewesen**. Teil 2 muss zuerst entscheiden, was von beidem
+die Grundlage wird und was gelöscht gehört; ohne diese Entscheidung würde am
+falschen Artefakt gearbeitet.
+
+In beiden Fällen gilt: es gibt keine Artikeldaten. Keine Titel, keine Preise,
+keine Links — die Dateinamen sind Hashes wie `2024-12-29_1601b6dd67ad7.jpg`.
 
 **Datei** `data/coasters.json`:
 
