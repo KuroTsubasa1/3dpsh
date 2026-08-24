@@ -85,7 +85,7 @@ npm install -D tailwindcss @tailwindcss/vite
 @import "tailwindcss";
 
 @theme {
-  /* Marke — vollständige Palette, keine weiteren Buntfarben */
+  /* Brand palette in full — no other colours anywhere in this project. */
   --color-brand:       #6aaa43;
   --color-brand-light: #7bc04f;
   --color-brand-dark:  #5a9236;
@@ -102,15 +102,15 @@ npm install -D tailwindcss @tailwindcss/vite
   --shadow-wb-lg: 7px 7px 0 var(--color-ink);
 }
 
-/* Werkbank-Grundformen: einmal definiert statt in jeder Komponente wiederholt. */
+/* Werkbank primitives, defined once instead of repeated per component. */
 @utility wb-frame {
   border: 3px solid var(--color-ink);
   border-radius: var(--radius-wb);
   box-shadow: var(--shadow-wb);
 }
 
-/* Kippt beim Hovern leicht heraus. Die Bewegung ist dekorativ und wird
-   bei prefers-reduced-motion abgeschaltet. */
+/* Lifts and tilts on hover. Purely decorative, so it is switched off under
+   prefers-reduced-motion. */
 @utility wb-tilt {
   transition: transform 150ms ease, box-shadow 150ms ease;
 
@@ -171,14 +171,22 @@ nichts. In `app.vue` vorübergehend direkt nach `<div id="app">` einfügen:
 
 - [ ] **Step 6: Bauen und die erzeugte CSS prüfen**
 
+Nuxt inlined globales CSS ins SSR-HTML, statt es als eigene Datei unter
+`.output/public/_nuxt/` auszuliefern. Deshalb gegen die **ausgelieferte Seite**
+prüfen, nicht gegen den Ordner — und nach einem Token suchen, das es vorher nicht
+gab (`6aaa43` allein liefert falsch-positive Treffer aus `modern.css`):
+
 ```bash
 npm run build
-grep -r --include="*.css" -l "6aaa43" .output/public/_nuxt/ && echo "TOKEN OK"
-grep -rh --include="*.css" -o "\.wb-frame{[^}]*}" .output/public/_nuxt/ | head -1
+(PORT=5099 node .output/server/index.mjs >/dev/null 2>&1 &)
+sleep 5
+curl -fsS http://127.0.0.1:5099/ | grep -o -- "--color-brand:#6aaa43" | head -1
+curl -fsS http://127.0.0.1:5099/ | grep -o "\.wb-frame{[^}]*}" | head -1
+pkill -f "index.mjs"
 ```
 
-Erwartung: „TOKEN OK" und eine `.wb-frame`-Regel mit `border:3px solid`. Wenn
-nichts gefunden wird, greift das Vite-Plugin nicht — dann `nuxt.config.ts`
+Erwartung: das Token einmal, und eine `.wb-frame`-Regel mit `border:3px solid`.
+Wenn nichts gefunden wird, greift das Vite-Plugin nicht — dann `nuxt.config.ts`
 prüfen, **nicht** die CSS von Hand nachbessern.
 
 - [ ] **Step 7: Sonde wieder entfernen**
@@ -337,8 +345,8 @@ overscroll producing values outside the range."
 
 ```vue
 <template>
-  <!-- Dekoratives Element: für Screenreader unsichtbar, aber der Fortschritt
-       ist als Text vorhanden, falls jemand ihn doch vorgelesen bekommt. -->
+  <!-- Decorative: hidden from assistive tech. The percentage is rendered as
+       text anyway, so it stays meaningful if it ever is announced. -->
   <div v-if="!hidden" class="fil" aria-hidden="true">
     <div class="fil-spool">
       <svg viewBox="0 0 92 92">
@@ -386,7 +394,7 @@ let ticking = false
 const headX = computed(() => X0 + (X1 - X0) * progress.value)
 const railPath = `M ${X0} ${Y} L ${X1} ${Y}`
 
-// Leichter Durchhang, damit der Strang nicht wie ein Lineal wirkt.
+// A slight sag so the strand does not read as a ruler.
 const strandPath = computed(() => {
   const x = headX.value
   const midX = X0 + (x - X0) / 2
@@ -405,8 +413,8 @@ function onScroll() {
   if (!ticking) { ticking = true; requestAnimationFrame(update) }
 }
 
-// Der Cookie-Banner sitzt ebenfalls unten. Solange er offen ist, tritt der
-// Spool zurück — zwei gestapelte Leisten verdecken den Seiteninhalt.
+// The cookie banner occupies the same bottom edge. While it is open the spool
+// steps aside — two stacked bars would bury the page content.
 function syncBannerCollision() {
   hidden.value = !!document.querySelector('.cookie-consent:not([hidden])')
 }
@@ -445,8 +453,8 @@ onBeforeUnmount(() => {
   border-radius: 999px; padding: 5px 10px; box-shadow: 2px 2px 0 var(--color-ink);
 }
 
-/* Auf dem Telefon ist unten links kein freier Platz: nur eine dünne
-   Fortschrittslinie, kein Spool und keine Anzeige. */
+/* No free space bottom-left on a phone: a thin progress line only, no spool
+   and no readout. */
 @media (max-width: 767px) {
   .fil-spool, .fil-readout { display: none; }
   .fil-track { height: 6px; }
@@ -513,8 +521,8 @@ Header und Footer sind heute pro Seite dupliziert: `index.vue` und
 </template>
 ```
 
-`ClientOnly`, weil der Spool `window` und `document` liest — ohne das bricht
-der SSR-Durchlauf.
+`ClientOnly`, because the spool reads `window` and `document`; without it the
+SSR pass breaks.
 
 - [ ] **Step 2: `app.vue` auf das Layout umstellen**
 
@@ -628,9 +636,9 @@ import { ref } from 'vue'
 
 const menuOpen = ref(false)
 
-// Nur Ziele, die es heute gibt. /katalog und die Workshop-Sektion entstehen in
-// Teil 2 und 3; bis dahin verlinkt hier nichts ins Leere. Die Anker #services
-// und #contact stammen aus den noch bestehenden Sektionen der Startseite.
+// Only targets that exist today. /katalog and the workshops section arrive in
+// parts 2 and 3; until then nothing here points into the void. The #services and
+// #contact anchors come from the homepage sections still in place.
 const nav = [
   { to: '/coaster-catalog', label: 'Katalog' },
   { to: '/#services', label: 'Auftragsdruck' },
@@ -789,10 +797,10 @@ filament strand."
 </template>
 
 <script setup lang="ts">
-// Die drei Wege aus dem Spec. Reihenfolge folgt der Gewichtung: Shop und
-// Workshops sind die Wachstumsfelder, Auftragsdruck bleibt bewusst kleiner.
-// Die Workshop-Sektion entsteht erst in Teil 3. Bis dahin führt die Karte zum
-// Kontaktformular — der Untertitel sagt das ehrlich, statt ins Leere zu zeigen.
+// The three paths from the spec, ordered by what the site can actually move:
+// shop and workshops are the growth areas, jobbing print stays smaller.
+// The workshops section only arrives in part 3. Until then this card leads to
+// the contact form, and the subtitle says so rather than pointing nowhere.
 const paths = [
   { to: '/coaster-catalog', title: 'Shop & Designs', text: 'Untersetzer, Deko, Fandom-Motive', tone: 'bg-brand/10' },
   { to: '/#contact', title: 'Workshops', text: '3D-Druck, Blender, Cosplay-Foto — Termine auf Anfrage', tone: 'bg-brand-light/15' },
