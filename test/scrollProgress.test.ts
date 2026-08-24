@@ -14,8 +14,8 @@ describe('scrollProgress', () => {
     expect(scrollProgress(1000, 3000, 1000)).toBe(0.5)
   })
 
-  it('returns 0 when the page is not scrollable (no division by zero)', () => {
-    expect(scrollProgress(0, 800, 1000)).toBe(0)
+  it('returns 0 when the page is not scrollable, even while overscrolling', () => {
+    expect(scrollProgress(-50, 800, 1000)).toBe(0)
   })
 
   it('clamps negative scrollTop from overscroll', () => {
