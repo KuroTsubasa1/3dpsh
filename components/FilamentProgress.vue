@@ -1,0 +1,122 @@
+<template>
+  <!-- Decorative: hidden from assistive tech. The percentage is rendered as
+       text anyway, so it stays meaningful if it ever is announced. -->
+  <div v-if="!hidden" class="fil" aria-hidden="true">
+    <div class="fil-spool">
+      <svg viewBox="0 0 92 92">
+        <g :transform="`rotate(${progress * 900} 46 46)`">
+          <circle cx="46" cy="46" r="40" fill="#FBFBF7" stroke="#20201f" stroke-width="5" />
+          <circle cx="46" cy="46" r="27" fill="#6aaa43" stroke="#20201f" stroke-width="4" />
+          <circle cx="46" cy="46" r="9" fill="#FBFBF7" stroke="#20201f" stroke-width="4" />
+          <g stroke="#20201f" stroke-width="3" stroke-linecap="round">
+            <line x1="46" y1="19" x2="46" y2="28" /><line x1="46" y1="64" x2="46" y2="73" />
+            <line x1="19" y1="46" x2="28" y2="46" /><line x1="64" y1="46" x2="73" y2="46" />
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <div class="fil-readout">{{ Math.round(progress * 100) }} % gedruckt</div>
+
+    <div class="fil-track">
+      <svg viewBox="0 0 1000 96" preserveAspectRatio="none">
+        <path :d="railPath" fill="none" stroke="#e6e6e6" stroke-width="2"
+              stroke-dasharray="2 8" stroke-linecap="round" />
+        <path :d="strandPath" fill="none" stroke="#6aaa43" stroke-width="5" stroke-linecap="round" />
+        <g :transform="`translate(${headX} 62)`">
+          <rect x="-13" y="-30" width="26" height="26" rx="4" fill="#FBFBF7" stroke="#20201f" stroke-width="4" />
+          <path d="M -7 -4 L 7 -4 L 0 6 Z" fill="#6aaa43" stroke="#20201f" stroke-width="3.5" stroke-linejoin="round" />
+        </g>
+      </svg>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { scrollProgress } from '~/utils/scrollProgress'
+
+const X0 = 100
+const X1 = 1000
+const Y = 62
+
+const progress = ref(0)
+const hidden = ref(false)
+let reduceMotion = false
+let ticking = false
+let observer: MutationObserver | null = null
+
+const headX = computed(() => X0 + (X1 - X0) * progress.value)
+const railPath = `M ${X0} ${Y} L ${X1} ${Y}`
+
+// A slight sag so the strand does not read as a ruler.
+const strandPath = computed(() => {
+  const x = headX.value
+  const midX = X0 + (x - X0) / 2
+  const sag = Y + Math.min(16, (x - X0) * 0.035)
+  return `M ${X0} ${Y} Q ${midX} ${sag} ${x} ${Y}`
+})
+
+function update() {
+  ticking = false
+  if (reduceMotion) { progress.value = 1; return }
+  const el = document.scrollingElement || document.documentElement
+  progress.value = scrollProgress(el.scrollTop, el.scrollHeight, window.innerHeight)
+}
+
+function onScroll() {
+  if (!ticking) { ticking = true; requestAnimationFrame(update) }
+}
+
+// The cookie banner occupies the same bottom edge. While it is open the spool
+// steps aside — two stacked bars would bury the page content. The banner uses
+// v-if, so it is removed from (and re-added to) the DOM rather than merely
+// hidden; a MutationObserver keeps this in sync instead of a single check.
+function syncBannerCollision() {
+  hidden.value = !!document.querySelector('.cookie-consent')
+}
+
+onMounted(() => {
+  reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', onScroll)
+  syncBannerCollision()
+  observer = new MutationObserver(syncBannerCollision)
+  observer.observe(document.body, { childList: true, subtree: true })
+  update()
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('resize', onScroll)
+  observer?.disconnect()
+})
+</script>
+
+<style scoped>
+.fil-track {
+  position: fixed; left: 0; right: 0; bottom: 0; height: 96px;
+  pointer-events: none; z-index: 40;
+}
+.fil-track svg { width: 100%; height: 100%; display: block; }
+
+.fil-spool {
+  position: fixed; left: 18px; bottom: 14px; width: 92px; height: 92px;
+  pointer-events: none; z-index: 41;
+}
+
+.fil-readout {
+  position: fixed; left: 120px; bottom: 58px; z-index: 42; pointer-events: none;
+  font-family: var(--font-display); font-weight: 700; font-size: 11px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--color-gray);
+  background: var(--color-paper); border: 2px solid var(--color-ink);
+  border-radius: 999px; padding: 5px 10px; box-shadow: 2px 2px 0 var(--color-ink);
+}
+
+/* No free space bottom-left on a phone: a thin progress line only, no spool
+   and no readout. */
+@media (max-width: 767px) {
+  .fil-spool, .fil-readout { display: none; }
+  .fil-track { height: 6px; }
+}
+</style>
