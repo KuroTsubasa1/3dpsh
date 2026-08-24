@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* Marke — vollständige Palette, keine weiteren Buntfarben */
+  /* Brand palette in full — no other colours anywhere in this project. */
   --color-brand:       #6aaa43;
   --color-brand-light: #7bc04f;
   --color-brand-dark:  #5a9236;
@@ -18,15 +18,15 @@
   --shadow-wb-lg: 7px 7px 0 var(--color-ink);
 }
 
-/* Werkbank-Grundformen: einmal definiert statt in jeder Komponente wiederholt. */
+/* Werkbank primitives, defined once instead of repeated per component. */
 @utility wb-frame {
   border: 3px solid var(--color-ink);
   border-radius: var(--radius-wb);
   box-shadow: var(--shadow-wb);
 }
 
-/* Kippt beim Hovern leicht heraus. Die Bewegung ist dekorativ und wird
-   bei prefers-reduced-motion abgeschaltet. */
+/* Lifts and tilts on hover. Purely decorative, so it is switched off under
+   prefers-reduced-motion. */
 @utility wb-tilt {
   transition: transform 150ms ease, box-shadow 150ms ease;
 
