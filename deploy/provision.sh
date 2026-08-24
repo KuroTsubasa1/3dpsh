@@ -22,6 +22,7 @@ NGINX_ENABLED="/etc/nginx/sites-enabled/3dpsh.conf"
 # same server_name, so it must go — otherwise nginx keeps the first vhost it
 # parses and which one that is depends on filename order.
 LEGACY_ENABLED="/etc/nginx/sites-enabled/3dpsh"
+LEGACY_AVAIL="/etc/nginx/sites-available/3dpsh"
 
 if [ "$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo"; fi
 
@@ -39,10 +40,24 @@ $SUDO mkdir -p /var/www/certbot "$APP_DIR"
 $SUDO cp "$SCRIPT_DIR/nginx/3dpsh.conf" "$NGINX_AVAIL"
 $SUDO ln -sf "$NGINX_AVAIL" "$NGINX_ENABLED"
 $SUDO rm -f "$LEGACY_ENABLED"
-# NB: keep `nginx -t` and the reload on separate lines. In a `cmd && cmd` list a
-# failure of the first command is exempt from `set -e`, so a bad config would be
-# swallowed and the deploy would go green anyway.
-$SUDO nginx -t
+
+# A rejected vhost must not be left enabled. The running nginx keeps its config
+# in memory, so a bad file does no immediate harm — but the next reload from any
+# source (a certbot renewal hook, another project's deploy) would then fail for
+# all ~20 vhosts on this box. Restore the previous state and fail the deploy.
+if ! $SUDO nginx -t; then
+    echo "ERROR: nginx rejected the new vhost — rolling back." >&2
+    $SUDO rm -f "$NGINX_ENABLED"
+    if $SUDO test -f "$LEGACY_AVAIL"; then
+        $SUDO ln -sf "$LEGACY_AVAIL" "$LEGACY_ENABLED"
+    fi
+    $SUDO nginx -t
+    exit 1
+fi
+
+# NB: keep `nginx -t` and the reload as separate statements. In a `cmd && cmd`
+# list a failure of the first command is exempt from `set -e`, so a bad config
+# would be swallowed and the deploy would go green anyway.
 $SUDO systemctl reload nginx
 
 echo "Provisioning complete: https://$DOMAIN"
