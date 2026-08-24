@@ -61,17 +61,17 @@ Optik drumherum wird visuell geprüft.
 - Produces: Utility-Klassen `bg-brand`, `text-ink`, `border-ink`, `font-display`,
   `shadow-wb`, sowie die Utilities `wb-frame`, `wb-tilt`
 
-- [ ] **Step 1: Abhängigkeits-Drift klären (Gate)**
+- [ ] **Step 1: Sauberen Arbeitsbaum bestätigen**
 
-Im Arbeitsbaum stehen ungefragte Änderungen: `@nuxt/devtools` `^2.4.1` → `^3.4.2`
-und ein neu geschriebenes Lockfile. **Frage den Nutzer, ob das gewollt war.**
+Die `@nuxt/devtools`-Änderung war beabsichtigt und ist bereits als eigener
+Commit (`1656de0`) auf diesem Branch. Vor dem ersten `npm install` prüfen:
 
-- Gewollt → `git add package.json package-lock.json && git commit -m "chore: update devtools"` und weiter
-- Nicht gewollt → `git checkout package.json package-lock.json`
+```bash
+git branch --show-current    # erwartet: redesign/fundament
+git status --short           # erwartet: nur untracked Vorträge/
+```
 
-Erst danach fortfahren. Ein `npm install` im nächsten Schritt schreibt das
-Lockfile ohnehin um; die Frage muss vorher geklärt sein, sonst vermischen sich
-fremde und eigene Änderungen unauflösbar.
+Sind andere Änderungen offen: **stoppen und melden**, nicht überschreiben.
 
 - [ ] **Step 2: Tailwind installieren**
 
@@ -628,13 +628,13 @@ import { ref } from 'vue'
 
 const menuOpen = ref(false)
 
-// Zielseiten aus dem Spec. /katalog und /workshops entstehen in Teil 2 und 3 —
-// bis dahin zeigen sie auf die bestehenden Pfade, damit kein Link ins Leere geht.
+// Nur Ziele, die es heute gibt. /katalog und die Workshop-Sektion entstehen in
+// Teil 2 und 3; bis dahin verlinkt hier nichts ins Leere. Die Anker #services
+// und #contact stammen aus den noch bestehenden Sektionen der Startseite.
 const nav = [
   { to: '/coaster-catalog', label: 'Katalog' },
-  { to: '/#workshops', label: 'Workshops' },
-  { to: '/#auftrag', label: 'Auftragsdruck' },
-  { to: '/#kontakt', label: 'Kontakt' }
+  { to: '/#services', label: 'Auftragsdruck' },
+  { to: '/#contact', label: 'Kontakt' }
 ]
 </script>
 ```
@@ -645,7 +645,7 @@ const nav = [
 npm run build
 PORT=5099 node .output/server/index.mjs &
 sleep 4
-curl -fsS http://127.0.0.1:5099/ | grep -o "Katalog\|Workshops\|Auftragsdruck" | sort -u
+curl -fsS http://127.0.0.1:5099/ | grep -o "Katalog\|Auftragsdruck\|Kontakt" | sort -u
 kill %1
 ```
 
@@ -659,8 +659,9 @@ die waagerechte Navigation.
 git add components/TheHeader.vue
 git commit -m "feat: rebuild the header in the new visual language
 
-Four entries instead of eight — the removed ones pointed at anchors of the old
-homepage structure. The mobile menu is now a labelled button with aria-expanded
+Three entries instead of eight — the removed ones pointed at anchors that
+structure X drops. Workshops joins once its section exists in part 3; a nav item
+pointing at a section that does not exist yet is a broken link in production. The mobile menu is now a labelled button with aria-expanded
 rather than three unlabelled bars."
 ```
 
@@ -723,13 +724,18 @@ Innenabstand hält den Inhalt über dem Filament-Strang frei:
 
 - [ ] **Step 2: Kein Link verloren**
 
+Gegen `HEAD` vergleichen, nicht über `git stash` — der Vergleich muss auch dann
+greifen, wenn die neue Fassung schon committet ist:
+
 ```bash
-git stash && grep -oE 'href="[^"]+"' components/TheFooter.vue | sort -u > /tmp/links-alt.txt
-git stash pop && grep -oE 'href="[^"]+"' components/TheFooter.vue | sort -u > /tmp/links-neu.txt
+git show HEAD:components/TheFooter.vue | grep -oE 'https?://[^"]+' | sort -u > /tmp/links-alt.txt
+grep -oE 'https?://[^"]+' components/TheFooter.vue | sort -u > /tmp/links-neu.txt
 comm -23 /tmp/links-alt.txt /tmp/links-neu.txt
+grep -c "/impressum" components/TheFooter.vue
 ```
 
-Erwartung: keine Ausgabe. Jede Zeile wäre ein verlorener Link.
+Erwartung: keine Ausgabe aus `comm` (jede Zeile wäre ein verlorener externer
+Link), und mindestens ein Treffer für `/impressum` — das ist Pflichtangabe.
 
 - [ ] **Step 3: Commit**
 
@@ -785,10 +791,12 @@ filament strand."
 <script setup lang="ts">
 // Die drei Wege aus dem Spec. Reihenfolge folgt der Gewichtung: Shop und
 // Workshops sind die Wachstumsfelder, Auftragsdruck bleibt bewusst kleiner.
+// Die Workshop-Sektion entsteht erst in Teil 3. Bis dahin führt die Karte zum
+// Kontaktformular — der Untertitel sagt das ehrlich, statt ins Leere zu zeigen.
 const paths = [
   { to: '/coaster-catalog', title: 'Shop & Designs', text: 'Untersetzer, Deko, Fandom-Motive', tone: 'bg-brand/10' },
-  { to: '/#workshops', title: 'Workshops', text: '3D-Druck, Blender, Cosplay-Fotografie', tone: 'bg-brand-light/15' },
-  { to: '/#auftrag', title: 'Auftragsdruck', text: 'Prototypen, Ersatzteile, Kleinserie', tone: 'bg-gray-200/40' }
+  { to: '/#contact', title: 'Workshops', text: '3D-Druck, Blender, Cosplay-Foto — Termine auf Anfrage', tone: 'bg-brand-light/15' },
+  { to: '/#services', title: 'Auftragsdruck', text: 'Prototypen, Ersatzteile, Kleinserie', tone: 'bg-gray-200/40' }
 ]
 </script>
 ```
@@ -846,24 +854,38 @@ ls .output/public/_nuxt/ | grep -cE "\.(js|css)$"
 Erwartung: mehr als 0. Steht dort 0, fehlen die Client-Assets — dieselbe Falle
 wie am 24.08.; dann `nuxt.config.ts` auf `vite.build.rollupOptions` prüfen.
 
-- [ ] **Step 3: Pushen und Pipeline beobachten**
+- [ ] **Step 3: Lokal am gebauten Server nachweisen**
+
+Die Arbeit läuft auf `redesign/fundament`; ein Push löst **keinen** Deploy aus
+(die Pipeline hängt an `master`). Deshalb wird hier lokal nachgewiesen, was sonst
+gegen die Live-Seite geprüft würde:
 
 ```bash
-git push origin master
-gh run watch "$(gh run list -R KuroTsubasa1/3dpsh --limit 1 --json databaseId -q '.[0].databaseId')" -R KuroTsubasa1/3dpsh --exit-status
-```
-
-- [ ] **Step 4: Live nachweisen, nicht vermuten**
-
-```bash
-for a in $(curl -fsS https://3dps.space/ | grep -oE '/_nuxt/[^"]*\.(js|css)"' | tr -d '"' | sort -u); do
-  printf "%-40s %s\n" "$a" "$(curl -sS -o /dev/null -w '%{http_code}' https://3dps.space$a)"
+PORT=5099 node .output/server/index.mjs &
+sleep 4
+for a in $(curl -fsS http://127.0.0.1:5099/ | grep -oE '/_nuxt/[^"]*\.(js|css)"' | tr -d '"' | sort -u); do
+  printf "%-40s %s\n" "$a" "$(curl -sS -o /dev/null -w '%{http_code}' http://127.0.0.1:5099$a)"
 done
-curl -fsS https://3dps.space/ | grep -c "Designs, die man anfassen kann"
+curl -fsS http://127.0.0.1:5099/ | grep -c "Designs, die man anfassen kann"
+kill %1
 ```
 
-Erwartung: jedes Asset `200`, Headline vorhanden. Zusätzlich im Browser prüfen,
-dass der Spool beim Scrollen läuft und die Seite hydriert (Menü-Button reagiert).
+Erwartung: jedes Asset `200`, Headline genau einmal.
+
+- [ ] **Step 4: Im Browser prüfen, was HTTP-Codes nicht zeigen**
+
+Bei 390 px und 1280 px ansehen: Spool läuft beim Scrollen, Menü-Button klappt
+auf (die Seite ist also hydriert), Karten kippen beim Hovern. Danach „Bewegung
+reduzieren" aktivieren und neu laden — Spool steht still, Karten kippen nicht.
+
+- [ ] **Step 5: Branch pushen**
+
+```bash
+git push -u origin redesign/fundament
+```
+
+Kein Deploy, keine Pipeline. Der Weg auf die Produktion wird nach dem finalen
+Review entschieden.
 
 ---
 
