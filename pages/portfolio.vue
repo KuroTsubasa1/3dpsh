@@ -1,7 +1,5 @@
 <template>
   <div class="portfolio-page">
-    <TheHeader />
-    
     <section class="hero">
       <div class="container">
         <div class="hero-content">
@@ -74,8 +72,6 @@
         </div>
       </div>
     </div>
-
-    <TheFooter />
   </div>
 </template>
 

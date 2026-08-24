@@ -34,8 +34,6 @@
         </template>
       </div>
     </div>
-    
-    <TheFooter />
   </div>
 </template>
 
