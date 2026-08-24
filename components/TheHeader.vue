@@ -1,7 +1,7 @@
 <template>
   <header class="sticky top-0 z-30 border-b-[3px] border-ink bg-paper">
     <nav class="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
-      <NuxtLink to="/" class="flex items-center gap-3 font-display font-bold text-ink">
+      <NuxtLink to="/" class="flex items-center gap-3 font-display font-bold text-ink" aria-label="3D Print Shop Harm, zur Startseite">
         <img src="/logo.png" alt="" width="40" height="40"
              class="rounded-full border-[2.5px] border-ink" />
         <span class="hidden sm:inline">3D Print Shop Harm</span>
