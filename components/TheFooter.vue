@@ -12,7 +12,7 @@
       </div>
 
       <div>
-        <p class="font-display text-sm font-bold uppercase tracking-wider">Wo du uns findest</p>
+        <h2 class="font-display text-sm font-bold uppercase tracking-wider">Wo du uns findest</h2>
         <ul class="mt-3 space-y-2 font-sans text-sm text-gray-200">
           <li><a class="hover:text-brand-light" href="https://www.etsy.com/de-en/shop/3DPrintShopHarm" target="_blank" rel="noopener noreferrer">Etsy-Shop</a></li>
           <li><a class="hover:text-brand-light" href="https://www.instagram.com/3d.print.shop.harm" target="_blank" rel="noopener noreferrer">Instagram</a></li>
@@ -21,7 +21,7 @@
       </div>
 
       <div>
-        <p class="font-display text-sm font-bold uppercase tracking-wider">Seite</p>
+        <h2 class="font-display text-sm font-bold uppercase tracking-wider">Seite</h2>
         <ul class="mt-3 space-y-2 font-sans text-sm text-gray-200">
           <li><NuxtLink class="hover:text-brand-light" to="/coaster-catalog">Katalog</NuxtLink></li>
           <li><NuxtLink class="hover:text-brand-light" to="/impressum">Impressum</NuxtLink></li>
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <p class="mx-auto mt-10 max-w-6xl px-4 font-sans text-xs text-gray">
+    <p class="mx-auto mt-10 max-w-6xl px-4 font-sans text-xs text-gray-200">
       © {{ new Date().getFullYear() }} 3D Print Shop Harm
     </p>
   </footer>
