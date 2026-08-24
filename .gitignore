@@ -27,3 +27,7 @@ deploy-simple.sh
 deploy-with-password.sh
 deploy.sh
 add-ssh-key-to-server.sh
+
+# Brainstorming-Sessions (visueller Begleiter)
+.superpowers/
+.playwright-mcp/
