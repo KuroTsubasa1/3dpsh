@@ -36,7 +36,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { scrollProgress } from '~/utils/scrollProgress'
 
-const X0 = 100
+const X0 = 0
 const X1 = 1000
 const Y = 62
 
@@ -81,8 +81,9 @@ onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('resize', onScroll)
   syncBannerCollision()
+  const root = document.getElementById('app') ?? document.body
   observer = new MutationObserver(syncBannerCollision)
-  observer.observe(document.body, { childList: true, subtree: true })
+  observer.observe(root, { childList: true })
   update()
 })
 
@@ -95,7 +96,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .fil-track {
-  position: fixed; left: 0; right: 0; bottom: 0; height: 96px;
+  position: fixed; left: 110px; right: 0; bottom: 0; height: 96px;
   pointer-events: none; z-index: 40;
 }
 .fil-track svg { width: 100%; height: 100%; display: block; }
@@ -117,6 +118,6 @@ onBeforeUnmount(() => {
    and no readout. */
 @media (max-width: 767px) {
   .fil-spool, .fil-readout { display: none; }
-  .fil-track { height: 6px; }
+  .fil-track { left: 0; height: 6px; }
 }
 </style>
