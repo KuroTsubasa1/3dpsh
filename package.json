@@ -10,8 +10,10 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "^3.4.2",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^18",
     "nuxt": "^3.6.0",
+    "tailwindcss": "^4.3.3",
     "typescript": "latest",
     "vite-plugin-vue-inspector": "^5.3.1"
   }

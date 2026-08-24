@@ -1,3 +1,5 @@
+import tailwindcss from '@tailwindcss/vite'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -44,9 +46,9 @@ export default defineNuxtConfig({
         { 'http-equiv': 'Expires', content: '0' }
       ],
       link: [
-        { 
-          rel: 'stylesheet', 
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap' 
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap'
         },
         {
           rel: 'icon',
@@ -108,10 +110,12 @@ export default defineNuxtConfig({
   },
   // Import global CSS
   css: [
-    '@/assets/css/modern.css'
+    '@/assets/css/modern.css',
+    '@/assets/css/app.css'
   ],
   // Production build configuration
   vite: {
+    plugins: [tailwindcss()],
     server: {
       hmr: {
         protocol: 'ws'
