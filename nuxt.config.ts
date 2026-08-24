@@ -118,18 +118,11 @@ export default defineNuxtConfig({
       }
     },
     build: {
-      // Production build optimizations
-      rollupOptions: {
-        output: {
-          entryFileNames: 'assets/[name]-[hash].js',
-          chunkFileNames: 'assets/[name]-[hash].js',
-          assetFileNames: 'assets/[name]-[hash].[ext]',
-          // Bundle everything into single files to avoid module resolution issues
-          manualChunks: undefined
-        },
-        // Bundle all dependencies
-        external: []
-      },
+      // No rollupOptions.output overrides here. Renaming the client entry to
+      // `assets/[name]-[hash].js` moved the files out of the buildAssetsDir
+      // (`_nuxt/`) that Nitro copies into .output/public — the HTML kept
+      // pointing at /_nuxt/assets/*, which 404'd, and the site shipped without
+      // hydration.
       // Force all modules to be bundled
       minify: 'esbuild',
       target: 'esnext'
@@ -161,13 +154,6 @@ export default defineNuxtConfig({
     experimental: {
       wasm: false
     },
-    // Proper static asset handling
-    publicAssets: [
-      {
-        baseURL: '/',
-        dir: 'public'
-      }
-    ],
     // Production optimizations
     minify: true,
     sourceMap: false,
