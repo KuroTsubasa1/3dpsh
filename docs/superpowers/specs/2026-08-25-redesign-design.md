@@ -213,6 +213,31 @@ Reihenfolge:
 5. Unterseiten
 6. `modern.css` löschen
 
+### Kaskaden-Falle für Teil 2 und 3 (ergänzt am 2026-08-25)
+
+Tailwind v4 legt alles in Kaskadenschichten. **Ungeschichtetes CSS schlägt jede
+Schicht, unabhängig von Spezifität.** Das hat in Teil 1 zwei Tage Arbeit gekostet
+und trifft die folgenden Teile genauso:
+
+1. `assets/css/app.css` deklariert die Reihenfolge
+   `theme, base, legacy, components, utilities` und importiert Tailwind in drei
+   Teilen, damit `modern.css` (in `layer(legacy)`) **über** dem Preflight, aber
+   **unter** den Utilities liegt. Eine handgeschriebene `@layer`-Anweisung allein
+   genügt nicht — sie wird beim Build verworfen, die physische Reihenfolge der
+   Importe entscheidet
+2. **Namenskollisionen:** `modern.css` besitzt Klassennamen, die Tailwind
+   ebenfalls als Utility kennt. `.container` ging so still an Tailwind über und
+   machte 14 Sektionen randlos; zurückgeholt per `@utility container`.
+   `modern.css:688–698` definiert außerdem `.mt-1`…`.mb-5` mit abweichenden
+   Werten — dieselbe Falle, derzeit von keinem Template benutzt. **Vor jeder
+   Sektionsmigration nach weiteren Überschneidungen greppen, nicht danach**
+3. **Vue-`<style scoped>`-Blöcke sind ungeschichtet** und schlagen daher jede
+   Tailwind-Schicht, auch Utilities. **20 Komponenten** tragen noch einen. Wer
+   eine Sektion auf Utilities umstellt und den scoped-Block stehen lässt, sieht
+   eine Utility, die scheinbar wirkungslos ist — und weder Build noch Test noch
+   Diff-Review zeigen es. Das Löschen des scoped-Blocks gehört in denselben
+   Schritt wie die Migration, nicht in einen Folgeschritt
+
 **Aufräumen unterwegs:**
 
 - `assets/css/styles.css` (870 Zeilen) wird in `nuxt.config.ts` nirgends
