@@ -31,3 +31,6 @@ add-ssh-key-to-server.sh
 # Brainstorming-Sessions (visueller Begleiter)
 .superpowers/
 .playwright-mcp/
+
+# Quelldateien der Vortraege (~60 MB Praesentationen, nicht ins Repo)
+Vorträge/
