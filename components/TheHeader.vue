@@ -10,7 +10,7 @@
       <ul class="ml-auto hidden items-center gap-1 md:flex">
         <li v-for="item in nav" :key="item.to">
           <NuxtLink :to="item.to"
-                    class="rounded-lg px-3 py-2 font-display text-sm font-bold text-ink hover:bg-brand hover:text-paper">
+                    class="rounded-lg px-3 py-2 font-display text-sm font-bold text-ink hover:bg-brand hover:text-ink">
             {{ item.label }}
           </NuxtLink>
         </li>

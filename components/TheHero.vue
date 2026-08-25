@@ -1,7 +1,7 @@
 <template>
   <section class="bg-paper py-16">
     <div class="mx-auto max-w-6xl px-4">
-      <span class="wb-frame inline-block bg-brand px-3 py-1 font-display text-xs font-bold uppercase tracking-wider text-paper">
+      <span class="wb-frame inline-block bg-brand px-3 py-1 font-display text-xs font-bold uppercase tracking-wider text-ink">
         Eutin
       </span>
 

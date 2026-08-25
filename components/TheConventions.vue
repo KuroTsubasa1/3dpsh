@@ -10,7 +10,7 @@
       <ul v-if="upcoming.length" class="mt-8 space-y-3">
         <li v-for="c in upcoming" :key="c.name + c.from"
             class="wb-frame flex flex-wrap items-center gap-4 bg-paper p-4">
-          <span class="wb-frame flex w-20 flex-none flex-col items-center bg-brand px-2 py-1 text-paper">
+          <span class="wb-frame flex w-20 flex-none flex-col items-center bg-brand px-2 py-1 text-ink">
             <span class="font-display text-xl font-bold leading-none">{{ dayOf(c.from) }}</span>
             <span class="font-display text-[10px] font-bold uppercase tracking-widest">{{ monthOf(c.from) }}</span>
           </span>
