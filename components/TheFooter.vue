@@ -24,7 +24,6 @@
         <h2 class="font-display text-sm font-bold uppercase tracking-wider">Seite</h2>
         <ul class="mt-3 space-y-2 font-sans text-sm text-gray-200">
           <li><NuxtLink class="hover:text-brand-light" :to="siteLinks.catalog">Katalog</NuxtLink></li>
-          <li><NuxtLink class="hover:text-brand-light" to="/impressum">Impressum</NuxtLink></li>
         </ul>
       </div>
     </div>
@@ -37,8 +36,8 @@
         <NuxtLink class="hover:text-brand-light" to="/impressum">Impressum</NuxtLink>
       </p>
       <p class="mt-3">
-        Angaben gemäß § 5 TMG: 3D Print Shop Harm | Lasse Harm | Verantwortlich für den
-        Inhalt nach § 55 Abs. 2 RStV
+        Angaben gemäß § 3 DDG: 3D Print Shop Harm | Lasse Harm | Verantwortlich für den
+        Inhalt nach § 3 DDG
       </p>
       <p class="mt-1">
         Steuernummer: 651 942 37704 | Gemäß § 19 UStG wird als Kleinunternehmen keine

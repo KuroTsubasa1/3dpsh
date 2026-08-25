@@ -97,8 +97,7 @@ export default defineNuxtConfig({
               "https://www.etsy.com/de-en/shop/3DPrintShopHarm"
             ],
             "priceRange": "€€",
-            "servesCuisine": "3D-Druck Service",
-            "taxID": "DE 351 241 205"
+            "servesCuisine": "3D-Druck Service"
           })
         }
       ]

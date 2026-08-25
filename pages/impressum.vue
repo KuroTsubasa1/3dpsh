@@ -22,14 +22,6 @@
       </section>
 
       <section class="impressum-section">
-        <h2>Umsatzsteuer-ID</h2>
-        <p>
-          Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br>
-          DE 351 241 205
-        </p>
-      </section>
-
-      <section class="impressum-section">
         <h2>Steuernummer</h2>
         <p>
           651 942 37704
