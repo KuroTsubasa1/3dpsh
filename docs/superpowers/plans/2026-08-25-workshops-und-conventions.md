@@ -30,6 +30,9 @@ des Betreibers. Teil 2 zweigt von ihm ab, nicht von `master`.
 - **Kontrast mindestens 4,5:1** für Fließtext. `text-gray` (#727271) reicht auf
   hellem Grund knapp nicht, wenn die Fläche getönt ist — auf getönten Karten
   `text-ink/75` verwenden
+- **Niemals heller Text auf `bg-brand`.** `text-paper` auf `#6aaa43` ergibt
+  **2,72:1** und verfehlt sogar die 3:1 für Großtext; `bg-brand-dark` bringt nur
+  3,62:1. Auf Grün gehört `text-ink` (**5,78:1**). Gilt auch für Hover-Zustände
 - **Echte Überschriften**, keine fett gestylten `<p>`. Die Startseite hat genau
   ein `<h1>` (im Hero); Abschnittsüberschriften sind `<h2>`, Karten darin `<h3>`
 - **`prefers-reduced-motion: reduce`** schaltet dekorative Bewegung ab. Das
@@ -431,7 +434,7 @@ than invented copy."
           <h3 class="font-display text-xl font-bold text-ink">{{ fam.name }}</h3>
           <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <div v-for="f in fam.formats" :key="f.slug" class="wb-frame bg-paper p-4">
-              <span class="wb-frame inline-block bg-brand px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-widest text-paper">
+              <span class="wb-frame inline-block bg-brand px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-widest text-ink">
                 {{ f.level }}
               </span>
               <h4 class="mt-2 font-display text-base font-bold text-ink">{{ f.title }}</h4>
