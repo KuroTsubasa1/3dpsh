@@ -40,25 +40,58 @@ export interface ConventionProblem {
  * not if. A malformed date would sort wrongly and a reversed range would hide
  * the event — both without a trace. Naming the bad entry costs one log line and
  * saves an afternoon.
+ *
+ * The input is untyped on purpose: the file is hand-edited JSON, so nothing
+ * guarantees it is even an array of objects at runtime, no matter what the
+ * `Convention[]` cast at the call site claims. Every check below has to
+ * survive a `null`, a string, or a completely different shape without
+ * throwing — a bad entry becomes a problem, never a crash.
  */
-export function validateConventions(list: Convention[]): {
+export function validateConventions(list: unknown): {
   valid: Convention[]
   problems: ConventionProblem[]
 } {
   const valid: Convention[] = []
   const problems: ConventionProblem[] = []
 
-  for (const c of list) {
-    if (!ISO_DATE.test(c.from) || !ISO_DATE.test(c.to)) {
-      problems.push({ name: c.name, reason: `Datum nicht im Format JJJJ-MM-TT: ${c.from} / ${c.to}` })
-      continue
-    }
-    if (c.to < c.from) {
-      problems.push({ name: c.name, reason: `Enddatum liegt vor dem Startdatum: ${c.from} → ${c.to}` })
-      continue
-    }
-    valid.push(c)
+  if (!Array.isArray(list)) {
+    return { valid: [], problems: [{ name: '(Datei)', reason: 'conventions ist keine Liste' }] }
   }
+
+  list.forEach((entry, index) => {
+    const position = `Eintrag ${index + 1}`
+
+    if (typeof entry !== 'object' || entry === null) {
+      problems.push({ name: position, reason: `${position} ist kein gültiger Eintrag (Objekt erwartet)` })
+      return
+    }
+
+    const c = entry as Partial<Convention>
+    const name = typeof c.name === 'string' ? c.name.trim() : ''
+    const label = name ? `${name} (${position})` : position
+
+    if (!name) {
+      problems.push({ name: label, reason: `${position}: Name fehlt` })
+      return
+    }
+    const city = typeof c.city === 'string' ? c.city.trim() : ''
+    if (!city) {
+      problems.push({ name: label, reason: `${position}: Ort fehlt` })
+      return
+    }
+    const from = typeof c.from === 'string' ? c.from : ''
+    const to = typeof c.to === 'string' ? c.to : ''
+    if (!ISO_DATE.test(from) || !ISO_DATE.test(to)) {
+      problems.push({ name: label, reason: `Datum nicht im Format JJJJ-MM-TT: ${from} / ${to}` })
+      return
+    }
+    if (to < from) {
+      problems.push({ name: label, reason: `Enddatum liegt vor dem Startdatum: ${from} → ${to}` })
+      return
+    }
+
+    valid.push(c as Convention)
+  })
 
   return { valid, problems }
 }

@@ -49,7 +49,12 @@ const today = new Date().toISOString().slice(0, 10)
 // The data file is edited by hand, so a bad entry is dropped rather than
 // breaking the page — but silently would just hide the operator's mistake.
 // A console.warn per problem puts it in the server log instead of nowhere.
-const { valid, problems } = validateConventions(data.conventions as Convention[])
+//
+// The `conventions` key itself is not guaranteed either: the file could be
+// renamed or rewritten with a different top-level shape. validateConventions()
+// already tolerates anything that is not an array, so it is safe to hand it
+// whatever the import produced, typed or not.
+const { valid, problems } = validateConventions((data as { conventions?: unknown }).conventions)
 for (const p of problems) {
   console.warn(`[conventions] ${p.name}: ${p.reason}`)
 }

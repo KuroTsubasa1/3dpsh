@@ -6,9 +6,12 @@ const con = (name: string, from: string, to: string): Convention => ({
 })
 
 describe('upcomingConventions', () => {
-  it('hides events that ended before today', () => {
-    const list = [con('Vergangen', '2026-03-01', '2026-03-02')]
-    expect(upcomingConventions(list, '2026-08-25')).toEqual([])
+  it('drops an event that ended before today but keeps one that has not', () => {
+    const list = [
+      con('Vergangen', '2026-03-01', '2026-03-02'),
+      con('Kommend', '2026-09-01', '2026-09-02')
+    ]
+    expect(upcomingConventions(list, '2026-08-25').map(c => c.name)).toEqual(['Kommend'])
   })
 
   it('keeps an event that is running today', () => {
@@ -52,7 +55,7 @@ describe('validateConventions', () => {
     const result = validateConventions(list)
     expect(result.valid).toEqual([])
     expect(result.problems).toHaveLength(1)
-    expect(result.problems[0].name).toBe('Schlecht')
+    expect(result.problems[0].name).toBe('Schlecht (Eintrag 1)')
   })
 
   it('reports an end date before the start date', () => {
@@ -60,15 +63,83 @@ describe('validateConventions', () => {
     const result = validateConventions(list)
     expect(result.valid).toEqual([])
     expect(result.problems).toHaveLength(1)
-    expect(result.problems[0].name).toBe('Verkehrt')
+    expect(result.problems[0].name).toBe('Verkehrt (Eintrag 1)')
   })
 
-  it('splits a mix of a valid and an invalid entry', () => {
+  it('splits a mix of a valid and an invalid entry, naming the invalid one by its position', () => {
     const good = con('Gut', '2026-09-01', '2026-09-02')
     const bad = con('Schlecht', '2026-9-1', '2026-9-2')
     const result = validateConventions([good, bad])
     expect(result.valid).toEqual([good])
     expect(result.problems).toHaveLength(1)
-    expect(result.problems[0].name).toBe('Schlecht')
+    expect(result.problems[0].name).toBe('Schlecht (Eintrag 2)')
+  })
+
+  it('rejects a top-level value that is not an array, without throwing', () => {
+    expect(validateConventions(null)).toEqual({
+      valid: [],
+      problems: [{ name: '(Datei)', reason: 'conventions ist keine Liste' }]
+    })
+    expect(validateConventions({ not: 'an array' })).toEqual({
+      valid: [],
+      problems: [{ name: '(Datei)', reason: 'conventions ist keine Liste' }]
+    })
+    expect(validateConventions(undefined)).toEqual({
+      valid: [],
+      problems: [{ name: '(Datei)', reason: 'conventions ist keine Liste' }]
+    })
+  })
+
+  it('rejects a bare string entry, locating it by position', () => {
+    const result = validateConventions(['not an object'])
+    expect(result.valid).toEqual([])
+    expect(result.problems).toHaveLength(1)
+    expect(result.problems[0].name).toBe('Eintrag 1')
+  })
+
+  it('rejects null inside the array without throwing', () => {
+    const result = validateConventions([null])
+    expect(result.valid).toEqual([])
+    expect(result.problems).toHaveLength(1)
+    expect(result.problems[0].name).toBe('Eintrag 1')
+  })
+
+  it('rejects an entry with a missing "to" date', () => {
+    const bad = { name: 'Halb', from: '2026-09-01', city: 'Eutin', venue: '', stand: '', url: '' }
+    const result = validateConventions([bad])
+    expect(result.valid).toEqual([])
+    expect(result.problems).toHaveLength(1)
+    expect(result.problems[0].name).toBe('Halb (Eintrag 1)')
+  })
+
+  it('rejects a date carrying a time component', () => {
+    const list = [con('Mit Uhrzeit', '2026-09-01T09:00', '2026-09-02')]
+    const result = validateConventions(list)
+    expect(result.valid).toEqual([])
+    expect(result.problems).toHaveLength(1)
+    expect(result.problems[0].name).toBe('Mit Uhrzeit (Eintrag 1)')
+  })
+
+  it('rejects an entry with a missing name, locating it by position', () => {
+    const bad = { from: '2026-09-01', to: '2026-09-02', city: 'Eutin', venue: '', stand: '', url: '' }
+    const result = validateConventions([bad])
+    expect(result.valid).toEqual([])
+    expect(result.problems).toHaveLength(1)
+    expect(result.problems[0].name).toBe('Eintrag 1')
+  })
+
+  it('rejects an entry with a missing city', () => {
+    const bad = { name: 'Kein Ort', from: '2026-09-01', to: '2026-09-02', venue: '', stand: '', url: '' }
+    const result = validateConventions([bad])
+    expect(result.valid).toEqual([])
+    expect(result.problems).toHaveLength(1)
+    expect(result.problems[0].name).toBe('Kein Ort (Eintrag 1)')
+  })
+
+  it('survives a mix of every kind of bad entry without throwing', () => {
+    const good = con('Gut', '2026-09-01', '2026-09-02')
+    const result = validateConventions([null, 'x', 42, good, { name: 'Ohne Ort' }])
+    expect(result.valid).toEqual([good])
+    expect(result.problems).toHaveLength(4)
   })
 })
