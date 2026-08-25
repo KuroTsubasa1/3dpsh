@@ -1,5 +1,5 @@
 <template>
-  <section id="workshops" class="bg-gray-200/40 py-16">
+  <section id="workshops" class="bg-paper py-16">
     <div class="mx-auto max-w-6xl px-4">
       <h2 class="font-display text-3xl font-bold tracking-tight text-ink">{{ heading }}</h2>
       <p class="mt-2 max-w-xl font-sans text-ink/75">
