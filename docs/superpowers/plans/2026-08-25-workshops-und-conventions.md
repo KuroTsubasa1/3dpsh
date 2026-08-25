@@ -354,7 +354,13 @@ Run: `node scripts/extract-workshops.mjs`
 - [ ] **Step 2: `data/workshops.json` aus der Ausgabe schreiben**
 
 Von Hand, aus dem was das Skript ausgibt. **Nichts hinzuerfinden.** Die beiden
-Keynote-Formate bekommen `"summary": ""` und `"agenda": []`:
+Keynote-Formate bekommen `"summary": ""` und `"agenda": []`.
+
+> **Achtung, das folgende JSON zeigt nur die Struktur.** Seine Inhalte sind
+> Platzhalter und stimmen *nicht* mit den echten Folien überein — die
+> Aufbau-Agenda „Modellieren/Drucken/Lackieren" etwa kommt in keiner
+> Präsentation vor. Jeder Wert für `summary` und `agenda` muss aus der
+> Skript-Ausgabe stammen, nicht von hier.
 
 ```json
 {
