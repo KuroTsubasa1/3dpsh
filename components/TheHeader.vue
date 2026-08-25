@@ -36,6 +36,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { siteLinks } from '~/utils/siteLinks'
 
 const menuOpen = ref(false)
 
@@ -43,8 +44,8 @@ const menuOpen = ref(false)
 // parts 2 and 3; until then nothing here points into the void. The #services and
 // #contact anchors come from the homepage sections still in place.
 const nav = [
-  { to: '/coaster-catalog', label: 'Katalog' },
-  { to: '/#services', label: 'Auftragsdruck' },
-  { to: '/#contact', label: 'Kontakt' }
+  { to: siteLinks.catalog, label: 'Katalog' },
+  { to: siteLinks.services, label: 'Auftragsdruck' },
+  { to: siteLinks.contact, label: 'Kontakt' }
 ]
 </script>
