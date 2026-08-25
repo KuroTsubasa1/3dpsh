@@ -17,7 +17,7 @@
           <span class="min-w-0 flex-1">
             <h3 class="font-display text-lg font-bold text-ink">
               <a v-if="c.url" :href="c.url" target="_blank" rel="noopener noreferrer"
-                 class="text-ink underline decoration-brand decoration-2 underline-offset-2">{{ c.name }}</a>
+                 class="wb-link">{{ c.name }}</a>
               <template v-else>{{ c.name }}</template>
             </h3>
             <span class="block font-sans text-sm text-ink/75">{{ whereAndWhen(c) }}</span>
@@ -32,7 +32,7 @@
            otherwise be a heading above nothing. -->
       <p v-else class="mt-8 rounded-xl border-[3px] border-dashed border-gray bg-paper p-6 font-sans text-ink/75">
         Die Termine für die nächste Saison stehen noch nicht fest.
-        <NuxtLink :to="siteLinks.contact" class="text-ink underline decoration-brand decoration-2 underline-offset-2">Schreib uns</NuxtLink>,
+        <NuxtLink :to="siteLinks.contact" class="wb-link">Schreib uns</NuxtLink>,
         wenn du wissen willst, wo wir als Nächstes sind.
       </p>
     </div>

@@ -30,7 +30,7 @@
 
       <p class="mt-6 font-sans text-sm text-ink/75">
         Termine und Konditionen auf Anfrage —
-        <NuxtLink :to="siteLinks.contact" class="text-ink underline decoration-brand decoration-2 underline-offset-2">schreib uns kurz</NuxtLink>,
+        <NuxtLink :to="siteLinks.contact" class="wb-link">schreib uns kurz</NuxtLink>,
         was du vorhast.
       </p>
     </div>

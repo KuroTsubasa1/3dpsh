@@ -64,3 +64,13 @@
     &:hover { transform: none; }
   }
 }
+
+/* The brand green cannot carry link text (2.72:1 on paper), so the colour moves
+   into the underline and the contrast comes from the ink. */
+@utility wb-link {
+  color: var(--color-ink);
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-brand);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
