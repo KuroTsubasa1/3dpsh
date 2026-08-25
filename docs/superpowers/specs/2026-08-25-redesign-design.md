@@ -96,6 +96,25 @@ Von zehn Abschnitten auf sieben. Tiefe wandert auf Unterseiten.
 6. **Werkstatt** — kurz, mit echtem Foto
 7. **Kontakt** — Formular, Terminhinweis (der Hinweis auf Terminabsprache bleibt), Karte
 
+### Revision vom 2026-08-25 (nachmittags)
+
+Nach dem ersten Blick auf die gebaute Startseite: der Eindruck war „leerer und
+weniger Infos". Die Diagnose des Betreibers dazu war präziser als die
+Beobachtung — nicht *weniger* Inhalt, sondern **weniger Füllmaterial und mehr
+echte Information**. Daraus folgen drei Änderungen an dieser Struktur:
+
+1. **Zwei neue Abschnitte werden vorgezogen** und bekommen eigenes Gewicht:
+   die **Workshop-Übersicht** und der **Con-Kalender**. Beide liefern Angaben,
+   die es auf der Seite noch nie gab
+2. **Zusätzlich ausgeräumt** werden Portfolio-Galerie (→ `/auftragsdruck`) und
+   Über uns / Werkstatt (→ `/werkstatt`)
+3. **Bleiben** entgegen dem ursprünglichen Plan: der Intro-Abschnitt „Warum 3D
+   Print Shop Harm?" (Text wird neu geschrieben, Abschnitt bleibt) und die
+   Leistungen
+
+Startseite danach: Hero → Warum → Katalog-Teaser → **Workshops** →
+**Wo ihr uns trefft** → Leistungen → Kontakt.
+
 ### Was von der Startseite verschwindet
 
 - **Preisrechner** → `/auftragsdruck`. Ein Werkzeug für Entschlossene, kein
@@ -173,6 +192,49 @@ keine Links — die Dateinamen sind Hashes wie `2024-12-29_1601b6dd67ad7.jpg`.
 **Werkzeug** `scripts/sync-coasters.mjs`: liest `public/coaster-images/`, ergänzt
 fehlende Einträge, **überschreibt niemals gepflegte Felder**, meldet verwaiste
 Einträge. Damit fängst du nicht bei null an und kannst schrittweise füllen.
+
+## 5b. Workshops und Conventions
+
+### Workshop-Übersicht
+
+Quelle sind die sechs Präsentationen im Ordner `Vorträge/`. Drei Reihen:
+
+| Reihe | Formate | Datenlage |
+| --- | --- | --- |
+| 3D-Druck | Einsteiger · Aufbau (Fortgeschrittene) | Aufbau vollständig (35 Folien); Einsteiger ist eine Keynote-Datei — **kein Text extrahierbar** |
+| Blender | Crashkurs, 2 h Hands-on | Keynote — nur Titel und Dauer aus dem Dateinamen |
+| Cosplay-Fotografie | Stufe 1 Einstieg · Stufe 2 Fortgeschritten · Stufe 3 Experte | vollständig, je 15–16 Folien mit Agenda |
+
+`data/workshops.json` wird aus den `.pptx` erzeugt und danach von Hand gepflegt.
+Felder: `slug`, `family`, `title`, `level`, `summary`, `agenda[]`.
+
+**Dauer und Preis stehen nicht drin.** Sie sind nicht bekannt und werden nicht
+erfunden; bis der Betreiber sie liefert, zeigt die Übersicht „Termine und
+Konditionen auf Anfrage" mit Link ins Kontaktformular.
+
+**Offen:** für „3D-Druck Einsteiger" und „Blender-Crashkurs" fehlen PDF- oder
+PPTX-Exporte. Ohne sie erscheinen beide mit Titel und Stufe, aber ohne
+Beschreibung.
+
+### Con-Kalender
+
+`data/conventions.json`, vom Betreiber gepflegt. Felder: `name`, `from`, `to`,
+`city`, `venue`, `stand`, `url`.
+
+- Vergangene Termine werden automatisch ausgeblendet, sortiert nach Startdatum
+- **Leerzustand ist Teil der Spezifikation, nicht ein Nachgedanke:** stehen
+  keine Termine an, erscheint „Die Termine für die nächste Saison stehen noch
+  nicht fest. Schreib uns, wenn du wissen willst, wo wir als Nächstes sind."
+  Der Kalender ist der einzige Abschnitt der Seite, der von selbst leer laufen
+  kann — ohne diesen Fall stünde im Winter eine Überschrift über einer leeren
+  Fläche
+
+### Belegbare Zahlen aus den Präsentationen
+
+Aus dem Aufbau-Workshop, für die Textarbeit gegen Floskeln:
+
+- FDM: robuste Teile aus PLA, PETG und TPU **bis 400 × 400 × 450 mm**
+- Resin: feine Details und glatte Oberflächen **bis 130 × 80 × 150 mm**
 
 ## 6. Textstimme
 
