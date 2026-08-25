@@ -4,6 +4,8 @@
     <TheIntro />
     <TheServices />
     <TheEtsyShop />
+    <TheWorkshops />
+    <TheConventions />
     <ThePortfolio />
     <TheTestimonials />
     <PricingCalculator />

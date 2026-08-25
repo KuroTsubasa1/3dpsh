@@ -30,11 +30,9 @@ import { siteLinks } from '~/utils/siteLinks'
 
 // The three paths from the spec, ordered by what the site can actually move:
 // shop and workshops are the growth areas, jobbing print stays smaller.
-// The workshops section only arrives in part 3. Until then this card leads to
-// the contact form, and the subtitle says so rather than pointing nowhere.
 const paths = [
   { to: siteLinks.catalog, title: 'Shop & Designs', text: 'Untersetzer, Deko, Fandom-Motive', tone: 'bg-brand/10' },
-  { to: siteLinks.contact, title: 'Workshops', text: '3D-Druck, Blender, Cosplay-Foto — Termine auf Anfrage', tone: 'bg-brand-light/15' },
+  { to: siteLinks.workshops, title: 'Workshops', text: '3D-Druck, Blender, Cosplay-Foto', tone: 'bg-brand-light/15' },
   { to: siteLinks.services, title: 'Auftragsdruck', text: 'Prototypen, Ersatzteile, Kleinserie', tone: 'bg-gray-200/40' }
 ]
 </script>
