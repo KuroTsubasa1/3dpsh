@@ -440,7 +440,10 @@ than invented copy."
           <h3 class="font-display text-xl font-bold text-ink">{{ fam.name }}</h3>
           <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <div v-for="f in fam.formats" :key="f.slug" class="wb-frame bg-paper p-4">
-              <span class="wb-frame inline-block bg-brand px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-widest text-ink">
+              <!-- Not every deck names a level. An empty badge would be worse
+                   than none, so it only renders when the data says something. -->
+              <span v-if="f.level"
+                    class="wb-frame inline-block bg-brand px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-widest text-ink">
                 {{ f.level }}
               </span>
               <h4 class="mt-2 font-display text-base font-bold text-ink">{{ f.title }}</h4>
