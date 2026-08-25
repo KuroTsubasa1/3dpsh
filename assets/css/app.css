@@ -21,6 +21,8 @@
   --radius-wb: 0.75rem;
   --shadow-wb: 4px 4px 0 var(--color-ink);
   --shadow-wb-lg: 7px 7px 0 var(--color-ink);
+  --border-wb: 3px;
+  --tilt-wb: -1.2deg;
 }
 
 /* Reclaims the class name from Tailwind's built-in container utility: the legacy
@@ -34,10 +36,13 @@
 
 /* Werkbank primitives, defined once instead of repeated per component. */
 @utility wb-frame {
-  border: 3px solid var(--color-ink);
+  border: var(--border-wb) solid var(--color-ink);
   border-radius: var(--radius-wb);
   box-shadow: var(--shadow-wb);
 }
+
+@utility wb-edge-t { border-top: var(--border-wb) solid var(--color-ink); }
+@utility wb-edge-b { border-bottom: var(--border-wb) solid var(--color-ink); }
 
 /* Lifts and tilts on hover. Purely decorative, so it is switched off under
    prefers-reduced-motion. */
@@ -45,7 +50,7 @@
   transition: transform 150ms ease, box-shadow 150ms ease;
 
   &:hover {
-    transform: translate(-2px, -2px) rotate(-1.2deg);
+    transform: translate(-2px, -2px) rotate(var(--tilt-wb));
     box-shadow: var(--shadow-wb-lg);
   }
 

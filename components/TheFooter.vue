@@ -1,5 +1,5 @@
 <template>
-  <footer class="border-t-[3px] border-ink bg-ink pb-28 pt-12 text-paper">
+  <footer class="wb-edge-t bg-ink pb-28 pt-12 text-paper">
     <div class="mx-auto grid max-w-6xl gap-8 px-4 sm:grid-cols-3">
       <div>
         <p class="font-display text-lg font-bold">3D Print Shop Harm</p>
