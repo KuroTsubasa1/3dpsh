@@ -209,7 +209,7 @@ sie sonst live gehen könnten:
 
 ```vue
 <template>
-  <section id="conventions" class="bg-paper py-16">
+  <section id="conventions" class="bg-gray-200/40 py-16">
     <div class="mx-auto max-w-6xl px-4">
       <h2 class="font-display text-3xl font-bold tracking-tight text-ink">Wo ihr uns trefft</h2>
       <p class="mt-2 max-w-xl font-sans text-gray">
@@ -219,7 +219,7 @@ sie sonst live gehen könnten:
 
       <ul v-if="upcoming.length" class="mt-8 space-y-3">
         <li v-for="c in upcoming" :key="c.name + c.from"
-            class="wb-frame flex flex-wrap items-center gap-4 bg-white p-4">
+            class="wb-frame flex flex-wrap items-center gap-4 bg-paper p-4">
           <span class="wb-frame flex w-20 flex-none flex-col items-center bg-brand px-2 py-1 text-paper">
             <span class="font-display text-xl font-bold leading-none">{{ dayOf(c.from) }}</span>
             <span class="font-display text-[10px] font-bold uppercase tracking-widest">{{ monthOf(c.from) }}</span>
@@ -236,7 +236,7 @@ sie sonst live gehen könnten:
 
       <!-- The one state that is easy to forget: out of season this section would
            otherwise be a heading above nothing. -->
-      <p v-else class="mt-8 rounded-xl border-[3px] border-dashed border-gray bg-white p-6 font-sans text-gray">
+      <p v-else class="mt-8 rounded-xl border-[3px] border-dashed border-gray bg-paper p-6 font-sans text-gray">
         Die Termine für die nächste Saison stehen noch nicht fest.
         <NuxtLink :to="siteLinks.contact" class="text-brand underline">Schreib uns</NuxtLink>,
         wenn du wissen willst, wo wir als Nächstes sind.
@@ -419,7 +419,7 @@ than invented copy."
 
 ```vue
 <template>
-  <section id="workshops" class="bg-white py-16">
+  <section id="workshops" class="bg-gray-200/40 py-16">
     <div class="mx-auto max-w-6xl px-4">
       <h2 class="font-display text-3xl font-bold tracking-tight text-ink">Workshops</h2>
       <p class="mt-2 max-w-xl font-sans text-gray">
@@ -430,7 +430,7 @@ than invented copy."
         <article v-for="fam in families" :key="fam.slug" class="wb-frame bg-paper p-5">
           <h3 class="font-display text-xl font-bold text-ink">{{ fam.name }}</h3>
           <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <div v-for="f in fam.formats" :key="f.slug" class="wb-frame bg-white p-4">
+            <div v-for="f in fam.formats" :key="f.slug" class="wb-frame bg-paper p-4">
               <span class="wb-frame inline-block bg-brand px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-widest text-paper">
                 {{ f.level }}
               </span>
