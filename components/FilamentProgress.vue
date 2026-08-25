@@ -29,6 +29,12 @@
         </g>
       </svg>
     </div>
+
+    <!-- Below 768px the SVG track is hidden in favour of this flat bar: the
+         5-unit-tall strand rendered at 6px high with preserveAspectRatio
+         "none" was well under a pixel and the print head just looked
+         distorted. -->
+    <div class="fil-bar" :style="{ width: `${progress * 100}%` }"></div>
   </div>
 </template>
 
@@ -114,10 +120,16 @@ onBeforeUnmount(() => {
   border-radius: 999px; padding: 5px 10px; box-shadow: 2px 2px 0 var(--color-ink);
 }
 
-/* No free space bottom-left on a phone: a thin progress line only, no spool
-   and no readout. */
+.fil-bar {
+  display: none;
+  position: fixed; left: 0; right: 0; bottom: 0; height: 3px;
+  background: var(--color-brand); pointer-events: none; z-index: 40;
+}
+
+/* No free space bottom-left on a phone: a thin flat progress bar only, no
+   spool, no readout, and no squashed SVG track. */
 @media (max-width: 767px) {
-  .fil-spool, .fil-readout { display: none; }
-  .fil-track { left: 0; height: 6px; }
+  .fil-spool, .fil-readout, .fil-track { display: none; }
+  .fil-bar { display: block; }
 }
 </style>
