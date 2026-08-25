@@ -47,7 +47,10 @@ import data from '~/data/conventions.json'
 const MONTHS = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez']
 
 // Computed once per render on the server. Good enough: the list changes at
-// midnight and the page is server-rendered per request.
+// midnight and the page is server-rendered per request under `nuxt build`.
+// Under `nuxt generate` (also documented in this project's CLAUDE.md) there
+// is no per-request render — this date freezes at build time and the page
+// needs a rebuild to pick up the new day.
 const today = new Date().toISOString().slice(0, 10)
 
 // The data file is edited by hand, so a bad entry is dropped rather than
