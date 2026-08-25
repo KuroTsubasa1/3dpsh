@@ -1,6 +1,6 @@
 <template>
   <header class="sticky top-0 z-30 wb-edge-b bg-paper">
-    <nav class="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
+    <nav class="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3" aria-label="Hauptnavigation">
       <NuxtLink to="/" class="flex items-center gap-3 font-display font-bold text-ink" aria-label="3D Print Shop Harm, zur Startseite">
         <img src="/logo.png" alt="" width="40" height="40"
              class="rounded-full border-[2.5px] border-ink" />
@@ -21,16 +21,16 @@
               @click="menuOpen = !menuOpen">
         {{ menuOpen ? 'Schließen' : 'Menü' }}
       </button>
-    </nav>
 
-    <ul v-show="menuOpen" id="mobile-nav" class="border-t-[3px] border-ink bg-paper md:hidden">
-      <li v-for="item in nav" :key="item.to" class="border-b border-gray-200 last:border-0">
-        <NuxtLink :to="item.to" class="block px-4 py-3 font-display font-bold text-ink"
-                  @click="menuOpen = false">
-          {{ item.label }}
-        </NuxtLink>
-      </li>
-    </ul>
+      <ul v-show="menuOpen" id="mobile-nav" class="absolute inset-x-0 top-full border-t-[3px] border-ink bg-paper md:hidden">
+        <li v-for="item in nav" :key="item.to" class="border-b border-gray-200 last:border-0">
+          <NuxtLink :to="item.to" class="block px-4 py-3 font-display font-bold text-ink"
+                    @click="menuOpen = false">
+            {{ item.label }}
+          </NuxtLink>
+        </li>
+      </ul>
+    </nav>
   </header>
 </template>
 
