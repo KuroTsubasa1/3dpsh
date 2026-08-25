@@ -7,14 +7,14 @@
         {
           "slug": "3d-druck-einsteiger",
           "title": "Einsteiger",
-          "level": "Stufe 1",
+          "level": "",
           "summary": "",
           "agenda": []
         },
         {
           "slug": "3d-druck-aufbau",
-          "title": "Aufbau · Fortgeschrittene",
-          "level": "Stufe 2",
+          "title": "Aufbau-Workshop",
+          "level": "Fortgeschrittene",
           "summary": "3D-Druck für Cosplay – der nächste Level: Druckertypen, Düsen und Multi-Color, Bodyscans und Toleranzen, Mischbau, LEDs und High-End-Finishing.",
           "agenda": [
             "Drucker & Technik",

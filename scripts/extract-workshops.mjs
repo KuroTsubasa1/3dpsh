@@ -8,7 +8,7 @@
 // because the folder does not exist — that is intended. data/workshops.json,
 // hand-written from this script's output, is the maintained source from here
 // on; this script is not part of the build.
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs'
+import { readdirSync } from 'node:fs'
 import { execSync } from 'node:child_process'
 
 const DIR = 'Vorträge'
