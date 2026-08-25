@@ -3,7 +3,7 @@
     <div class="mx-auto max-w-6xl px-4">
       <h2 class="font-display text-3xl font-bold tracking-tight text-ink">{{ heading }}</h2>
       <p class="mt-2 max-w-xl font-sans text-ink/75">
-        Drei Reihen, aufeinander aufbauend. Du steigst da ein, wo du stehst.
+        Drei Reihen. Innerhalb jeder Reihe steigst du da ein, wo du stehst.
       </p>
 
       <div class="mt-8 space-y-4">

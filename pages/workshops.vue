@@ -6,8 +6,7 @@
           Workshops
         </h1>
         <p class="mt-4 max-w-xl font-sans text-lg text-gray">
-          Was wir zeigen, machen wir selbst — die Beispiele stammen aus unserer
-          eigenen Werkstatt.
+          Drei Reihen, sechs Formate. Termine und Konditionen auf Anfrage.
         </p>
       </div>
     </section>
