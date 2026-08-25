@@ -33,7 +33,8 @@
         {
           "slug": "blender-crashkurs",
           "title": "Crashkurs",
-          "level": "2 Stunden Hands-on",
+          "level": "",
+          "duration": "2 Stunden Hands-on",
           "summary": "",
           "agenda": []
         }

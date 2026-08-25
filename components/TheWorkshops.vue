@@ -18,6 +18,7 @@
                 {{ f.level }}
               </span>
               <h4 class="mt-2 font-display text-base font-bold text-ink">{{ f.title }}</h4>
+              <p v-if="f.duration" class="mt-1 font-sans text-sm text-ink/75">{{ f.duration }}</p>
               <p v-if="f.summary" class="mt-1 font-sans text-sm text-ink/75">{{ f.summary }}</p>
               <ul v-if="f.agenda.length" class="mt-2 list-disc pl-5 font-sans text-xs text-ink/75">
                 <li v-for="a in f.agenda" :key="a">{{ a }}</li>
