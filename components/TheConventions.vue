@@ -15,7 +15,11 @@
             <span class="font-display text-[10px] font-bold uppercase tracking-widest">{{ monthOf(c.from) }}</span>
           </span>
           <span class="min-w-0 flex-1">
-            <h3 class="font-display text-lg font-bold text-ink">{{ c.name }}</h3>
+            <h3 class="font-display text-lg font-bold text-ink">
+              <a v-if="c.url" :href="c.url" target="_blank" rel="noopener noreferrer"
+                 class="text-ink underline decoration-brand decoration-2 underline-offset-2">{{ c.name }}</a>
+              <template v-else>{{ c.name }}</template>
+            </h3>
             <span class="block font-sans text-sm text-ink/75">{{ whereAndWhen(c) }}</span>
           </span>
           <span v-if="c.stand" class="wb-frame bg-paper px-3 py-1 font-display text-xs font-bold">
