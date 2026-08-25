@@ -16,7 +16,7 @@
       </svg>
     </div>
 
-    <div class="fil-readout">{{ Math.round(progress * 100) }} % gedruckt</div>
+    <div v-if="!reduceMotion" class="fil-readout">{{ Math.round(progress * 100) }} % gedruckt</div>
 
     <div class="fil-track">
       <svg viewBox="0 0 1000 96" preserveAspectRatio="none">
@@ -42,7 +42,7 @@ const Y = 62
 
 const progress = ref(0)
 const hidden = ref(false)
-let reduceMotion = false
+const reduceMotion = ref(false)
 let ticking = false
 let observer: MutationObserver | null = null
 
@@ -59,7 +59,7 @@ const strandPath = computed(() => {
 
 function update() {
   ticking = false
-  if (reduceMotion) { progress.value = 1; return }
+  if (reduceMotion.value) { progress.value = 1; return }
   const el = document.scrollingElement || document.documentElement
   progress.value = scrollProgress(el.scrollTop, el.scrollHeight, window.innerHeight)
 }
@@ -77,7 +77,7 @@ function syncBannerCollision() {
 }
 
 onMounted(() => {
-  reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  reduceMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   window.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('resize', onScroll)
   syncBannerCollision()
