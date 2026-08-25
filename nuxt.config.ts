@@ -110,7 +110,6 @@ export default defineNuxtConfig({
   },
   // Import global CSS
   css: [
-    '@/assets/css/modern.css',
     '@/assets/css/app.css'
   ],
   // Production build configuration

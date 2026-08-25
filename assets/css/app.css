@@ -1,4 +1,6 @@
+@layer legacy, theme, base, components, utilities;
 @import "tailwindcss";
+@import "./modern.css" layer(legacy);
 
 @theme {
   /* Brand palette in full — no other colours anywhere in this project. */
