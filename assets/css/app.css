@@ -23,6 +23,15 @@
   --shadow-wb-lg: 7px 7px 0 var(--color-ink);
 }
 
+/* Reclaims the class name from Tailwind's built-in container utility: the legacy
+   sheet defines .container too, and the layer order now hands the name to
+   Tailwind. This is the single definition for both old and new sections. */
+@utility container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
 /* Werkbank primitives, defined once instead of repeated per component. */
 @utility wb-frame {
   border: 3px solid var(--color-ink);
