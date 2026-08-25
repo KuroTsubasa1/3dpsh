@@ -1,7 +1,7 @@
 <template>
   <section id="workshops" class="bg-gray-200/40 py-16">
     <div class="mx-auto max-w-6xl px-4">
-      <h2 class="font-display text-3xl font-bold tracking-tight text-ink">Workshops</h2>
+      <h2 class="font-display text-3xl font-bold tracking-tight text-ink">{{ heading }}</h2>
       <p class="mt-2 max-w-xl font-sans text-ink/75">
         Drei Reihen, aufeinander aufbauend. Du steigst da ein, wo du stehst.
       </p>
@@ -39,6 +39,11 @@
 <script setup lang="ts">
 import { siteLinks } from '~/utils/siteLinks'
 import data from '~/data/workshops.json'
+
+// The heading is a prop because this section appears both on the homepage,
+// where "Workshops" is the right label, and on /workshops, where the page
+// title already says that and repeating it reads as two stacked titles.
+withDefaults(defineProps<{ heading?: string }>(), { heading: 'Workshops' })
 
 const families = data.families
 </script>

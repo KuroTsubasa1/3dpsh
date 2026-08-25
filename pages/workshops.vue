@@ -11,7 +11,7 @@
         </p>
       </div>
     </section>
-    <TheWorkshops />
+    <TheWorkshops heading="Die drei Reihen" />
   </div>
 </template>
 
