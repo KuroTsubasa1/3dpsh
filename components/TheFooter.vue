@@ -29,9 +29,22 @@
       </div>
     </div>
 
-    <p class="mx-auto mt-10 max-w-6xl px-4 font-sans text-xs text-gray-200">
-      © {{ new Date().getFullYear() }} 3D Print Shop Harm
-    </p>
+    <!-- Legal block, supplied verbatim by the owner. Do not reword: the wording
+         and the cited sections are the operator's own legal statement. -->
+    <div class="mx-auto mt-10 max-w-6xl border-t border-gray px-4 pt-6 font-sans text-xs leading-relaxed text-gray-200">
+      <p>
+        © {{ new Date().getFullYear() }} 3D Print Shop Harm. Alle Rechte vorbehalten. |
+        <NuxtLink class="hover:text-brand-light" to="/impressum">Impressum</NuxtLink>
+      </p>
+      <p class="mt-3">
+        Angaben gemäß § 5 TMG: 3D Print Shop Harm | Lasse Harm | Verantwortlich für den
+        Inhalt nach § 55 Abs. 2 RStV
+      </p>
+      <p class="mt-1">
+        Steuernummer: 651 942 37704 | Gemäß § 19 UStG wird als Kleinunternehmen keine
+        Umsatzsteuer erhoben und entsprechend nicht ausgewiesen.
+      </p>
+    </div>
   </footer>
 </template>
 
