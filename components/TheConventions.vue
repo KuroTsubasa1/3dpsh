@@ -1,7 +1,7 @@
 <template>
   <section id="conventions" class="bg-gray-200/40 py-16">
     <div class="mx-auto max-w-6xl px-4">
-      <h2 class="font-display text-3xl font-bold tracking-tight text-ink">Wo ihr uns trefft</h2>
+      <h2 class="font-display text-3xl font-bold tracking-tight text-ink">Wo du uns triffst</h2>
       <p class="mt-2 max-w-xl font-sans text-ink/75">
         Die meisten Designs verkaufen wir persönlich auf Conventions. Hier steht,
         wo wir als Nächstes sind.
