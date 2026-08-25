@@ -5,10 +5,10 @@
     <div class="fil-spool">
       <svg viewBox="0 0 92 92">
         <g :transform="`rotate(${progress * 900} 46 46)`">
-          <circle cx="46" cy="46" r="40" fill="#FBFBF7" stroke="#20201f" stroke-width="5" />
-          <circle cx="46" cy="46" r="27" fill="#6aaa43" stroke="#20201f" stroke-width="4" />
-          <circle cx="46" cy="46" r="9" fill="#FBFBF7" stroke="#20201f" stroke-width="4" />
-          <g stroke="#20201f" stroke-width="3" stroke-linecap="round">
+          <circle cx="46" cy="46" r="40" fill="var(--color-paper)" stroke="var(--color-ink)" stroke-width="5" />
+          <circle cx="46" cy="46" r="27" fill="var(--color-brand)" stroke="var(--color-ink)" stroke-width="4" />
+          <circle cx="46" cy="46" r="9" fill="var(--color-paper)" stroke="var(--color-ink)" stroke-width="4" />
+          <g stroke="var(--color-ink)" stroke-width="3" stroke-linecap="round">
             <line x1="46" y1="19" x2="46" y2="28" /><line x1="46" y1="64" x2="46" y2="73" />
             <line x1="19" y1="46" x2="28" y2="46" /><line x1="64" y1="46" x2="73" y2="46" />
           </g>
@@ -20,12 +20,12 @@
 
     <div class="fil-track">
       <svg viewBox="0 0 1000 96" preserveAspectRatio="none">
-        <path :d="railPath" fill="none" stroke="#e6e6e6" stroke-width="2"
+        <path :d="railPath" fill="none" stroke="var(--color-gray-200)" stroke-width="2"
               stroke-dasharray="2 8" stroke-linecap="round" />
-        <path :d="strandPath" fill="none" stroke="#6aaa43" stroke-width="5" stroke-linecap="round" />
+        <path :d="strandPath" fill="none" stroke="var(--color-brand)" stroke-width="5" stroke-linecap="round" />
         <g :transform="`translate(${headX} 62)`">
-          <rect x="-13" y="-30" width="26" height="26" rx="4" fill="#FBFBF7" stroke="#20201f" stroke-width="4" />
-          <path d="M -7 -4 L 7 -4 L 0 6 Z" fill="#6aaa43" stroke="#20201f" stroke-width="3.5" stroke-linejoin="round" />
+          <rect x="-13" y="-30" width="26" height="26" rx="4" fill="var(--color-paper)" stroke="var(--color-ink)" stroke-width="4" />
+          <path d="M -7 -4 L 7 -4 L 0 6 Z" fill="var(--color-brand)" stroke="var(--color-ink)" stroke-width="3.5" stroke-linejoin="round" />
         </g>
       </svg>
     </div>
@@ -51,6 +51,7 @@ const hidden = ref(false)
 const reduceMotion = ref(false)
 let ticking = false
 let observer: MutationObserver | null = null
+let motionQuery: MediaQueryList | null = null
 
 const headX = computed(() => X0 + (X1 - X0) * progress.value)
 const railPath = `M ${X0} ${Y} L ${X1} ${Y}`
@@ -82,8 +83,17 @@ function syncBannerCollision() {
   hidden.value = !!document.querySelector('.cookie-consent')
 }
 
+// Keeps reduceMotion in sync if the visitor flips the OS setting mid-visit,
+// rather than only reading it once at mount.
+function onMotionChange(event: MediaQueryListEvent) {
+  reduceMotion.value = event.matches
+  update()
+}
+
 onMounted(() => {
-  reduceMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+  reduceMotion.value = motionQuery.matches
+  motionQuery.addEventListener('change', onMotionChange)
   window.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('resize', onScroll)
   syncBannerCollision()
@@ -96,6 +106,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll)
   window.removeEventListener('resize', onScroll)
+  motionQuery?.removeEventListener('change', onMotionChange)
   observer?.disconnect()
 })
 </script>
