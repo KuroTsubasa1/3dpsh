@@ -2,7 +2,7 @@
   <section id="conventions" class="bg-gray-200/40 py-16">
     <div class="mx-auto max-w-6xl px-4">
       <h2 class="font-display text-3xl font-bold tracking-tight text-ink">Wo ihr uns trefft</h2>
-      <p class="mt-2 max-w-xl font-sans text-gray">
+      <p class="mt-2 max-w-xl font-sans text-ink/75">
         Die meisten Designs verkaufen wir persönlich auf Conventions. Hier steht,
         wo wir als Nächstes sind.
       </p>
@@ -26,9 +26,9 @@
 
       <!-- The one state that is easy to forget: out of season this section would
            otherwise be a heading above nothing. -->
-      <p v-else class="mt-8 rounded-xl border-[3px] border-dashed border-gray bg-paper p-6 font-sans text-gray">
+      <p v-else class="mt-8 rounded-xl border-[3px] border-dashed border-gray bg-paper p-6 font-sans text-ink/75">
         Die Termine für die nächste Saison stehen noch nicht fest.
-        <NuxtLink :to="siteLinks.contact" class="text-brand underline">Schreib uns</NuxtLink>,
+        <NuxtLink :to="siteLinks.contact" class="text-ink underline decoration-brand decoration-2 underline-offset-2">Schreib uns</NuxtLink>,
         wenn du wissen willst, wo wir als Nächstes sind.
       </p>
     </div>

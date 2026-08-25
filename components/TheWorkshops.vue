@@ -2,14 +2,14 @@
   <section id="workshops" class="bg-gray-200/40 py-16">
     <div class="mx-auto max-w-6xl px-4">
       <h2 class="font-display text-3xl font-bold tracking-tight text-ink">Workshops</h2>
-      <p class="mt-2 max-w-xl font-sans text-gray">
+      <p class="mt-2 max-w-xl font-sans text-ink/75">
         Drei Reihen, aufeinander aufbauend. Du steigst da ein, wo du stehst.
       </p>
 
       <div class="mt-8 space-y-4">
         <article v-for="fam in families" :key="fam.slug" class="wb-frame bg-paper p-5">
           <h3 class="font-display text-xl font-bold text-ink">{{ fam.name }}</h3>
-          <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="mt-4 grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <div v-for="f in fam.formats" :key="f.slug" class="wb-frame bg-paper p-4">
               <!-- Not every deck names a level. An empty badge would be worse
                    than none, so it only renders when the data says something. -->
@@ -27,9 +27,9 @@
         </article>
       </div>
 
-      <p class="mt-6 font-sans text-sm text-gray">
+      <p class="mt-6 font-sans text-sm text-ink/75">
         Termine und Konditionen auf Anfrage —
-        <NuxtLink :to="siteLinks.contact" class="text-brand underline">schreib uns kurz</NuxtLink>,
+        <NuxtLink :to="siteLinks.contact" class="text-ink underline decoration-brand decoration-2 underline-offset-2">schreib uns kurz</NuxtLink>,
         was du vorhast.
       </p>
     </div>
