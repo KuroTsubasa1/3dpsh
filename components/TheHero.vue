@@ -16,9 +16,9 @@
 
       <div class="mt-10 grid gap-4 sm:grid-cols-3">
         <NuxtLink v-for="path in paths" :key="path.to" :to="path.to"
-                  class="wb-frame wb-tilt block bg-white p-5" :class="path.tone">
-          <span class="font-display text-xl font-bold text-ink">{{ path.title }}</span>
-          <span class="mt-1 block font-sans text-sm text-gray">{{ path.text }}</span>
+                  class="wb-frame wb-tilt block p-5" :class="path.tone">
+          <h2 class="font-display text-xl font-bold text-ink">{{ path.title }}</h2>
+          <span class="mt-1 block font-sans text-sm text-ink/75">{{ path.text }}</span>
         </NuxtLink>
       </div>
     </div>

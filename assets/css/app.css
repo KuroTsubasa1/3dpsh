@@ -35,6 +35,11 @@
     box-shadow: var(--shadow-wb-lg);
   }
 
+  &:focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     transition: none;
     &:hover { transform: none; }
