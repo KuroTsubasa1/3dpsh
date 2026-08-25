@@ -30,6 +30,13 @@ des Betreibers. Teil 2 zweigt von ihm ab, nicht von `master`.
 - **Kontrast mindestens 4,5:1** für Fließtext. `text-gray` (#727271) reicht auf
   hellem Grund knapp nicht, wenn die Fläche getönt ist — auf getönten Karten
   `text-ink/75` verwenden
+- **Grün ist keine Textfarbe auf hellem Grund.** `text-brand` auf `bg-paper`
+  ergibt **2,72:1**, das dunklere Grün nur 3,62:1. Links bekommen `text-ink`
+  (15,7:1) mit grüner Unterstreichung: `underline decoration-brand
+  decoration-2 underline-offset-2`. Die Farbe trägt dann die Marke, der
+  Kontrast der Text — und die Linkhaftigkeit hängt nicht allein an der Farbe
+- **`text-gray` nicht auf getönten Flächen.** Auf `bg-gray-200/40` sind es
+  **4,33:1**, also durchgefallen. Dort `text-ink/75` (6,5:1)
 - **Niemals heller Text auf `bg-brand`.** `text-paper` auf `#6aaa43` ergibt
   **2,72:1** und verfehlt sogar die 3:1 für Großtext; `bg-brand-dark` bringt nur
   3,62:1. Auf Grün gehört `text-ink` (**5,78:1**). Gilt auch für Hover-Zustände
@@ -215,7 +222,7 @@ sie sonst live gehen könnten:
   <section id="conventions" class="bg-gray-200/40 py-16">
     <div class="mx-auto max-w-6xl px-4">
       <h2 class="font-display text-3xl font-bold tracking-tight text-ink">Wo ihr uns trefft</h2>
-      <p class="mt-2 max-w-xl font-sans text-gray">
+      <p class="mt-2 max-w-xl font-sans text-ink/75">
         Die meisten Designs verkaufen wir persönlich auf Conventions. Hier steht,
         wo wir als Nächstes sind.
       </p>
@@ -239,9 +246,9 @@ sie sonst live gehen könnten:
 
       <!-- The one state that is easy to forget: out of season this section would
            otherwise be a heading above nothing. -->
-      <p v-else class="mt-8 rounded-xl border-[3px] border-dashed border-gray bg-paper p-6 font-sans text-gray">
+      <p v-else class="mt-8 rounded-xl border-[3px] border-dashed border-gray bg-paper p-6 font-sans text-ink/75">
         Die Termine für die nächste Saison stehen noch nicht fest.
-        <NuxtLink :to="siteLinks.contact" class="text-brand underline">Schreib uns</NuxtLink>,
+        <NuxtLink :to="siteLinks.contact" class="text-ink underline decoration-brand decoration-2 underline-offset-2">Schreib uns</NuxtLink>,
         wenn du wissen willst, wo wir als Nächstes sind.
       </p>
     </div>
@@ -431,14 +438,14 @@ than invented copy."
   <section id="workshops" class="bg-gray-200/40 py-16">
     <div class="mx-auto max-w-6xl px-4">
       <h2 class="font-display text-3xl font-bold tracking-tight text-ink">Workshops</h2>
-      <p class="mt-2 max-w-xl font-sans text-gray">
+      <p class="mt-2 max-w-xl font-sans text-ink/75">
         Drei Reihen, aufeinander aufbauend. Du steigst da ein, wo du stehst.
       </p>
 
       <div class="mt-8 space-y-4">
         <article v-for="fam in families" :key="fam.slug" class="wb-frame bg-paper p-5">
           <h3 class="font-display text-xl font-bold text-ink">{{ fam.name }}</h3>
-          <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="mt-4 grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <div v-for="f in fam.formats" :key="f.slug" class="wb-frame bg-paper p-4">
               <!-- Not every deck names a level. An empty badge would be worse
                    than none, so it only renders when the data says something. -->
@@ -456,9 +463,9 @@ than invented copy."
         </article>
       </div>
 
-      <p class="mt-6 font-sans text-sm text-gray">
+      <p class="mt-6 font-sans text-sm text-ink/75">
         Termine und Konditionen auf Anfrage —
-        <NuxtLink :to="siteLinks.contact" class="text-brand underline">schreib uns kurz</NuxtLink>,
+        <NuxtLink :to="siteLinks.contact" class="text-ink underline decoration-brand decoration-2 underline-offset-2">schreib uns kurz</NuxtLink>,
         was du vorhast.
       </p>
     </div>
