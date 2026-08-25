@@ -40,11 +40,12 @@ import { siteLinks } from '~/utils/siteLinks'
 
 const menuOpen = ref(false)
 
-// Only targets that exist today. /katalog and the workshops section arrive in
-// parts 2 and 3; until then nothing here points into the void. The #services and
-// #contact anchors come from the homepage sections still in place.
+// Only targets that exist today. /katalog arrives in part 3; until then
+// nothing here points into the void. The #services and #contact anchors come
+// from the homepage sections still in place.
 const nav = [
   { to: siteLinks.catalog, label: 'Katalog' },
+  { to: siteLinks.workshops, label: 'Workshops' },
   { to: siteLinks.services, label: 'Auftragsdruck' },
   { to: siteLinks.contact, label: 'Kontakt' }
 ]
