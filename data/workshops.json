@@ -1,0 +1,85 @@
+{
+  "families": [
+    {
+      "slug": "3d-druck",
+      "name": "3D-Druck",
+      "formats": [
+        {
+          "slug": "3d-druck-einsteiger",
+          "title": "Einsteiger",
+          "level": "Stufe 1",
+          "summary": "",
+          "agenda": []
+        },
+        {
+          "slug": "3d-druck-aufbau",
+          "title": "Aufbau · Fortgeschrittene",
+          "level": "Stufe 2",
+          "summary": "3D-Druck für Cosplay – der nächste Level: Druckertypen, Düsen und Multi-Color, Bodyscans und Toleranzen, Mischbau, LEDs und High-End-Finishing.",
+          "agenda": [
+            "Drucker & Technik",
+            "Slicer beherrschen",
+            "Passform & Planung",
+            "Kombinieren ist King",
+            "Tragen & Con-Praxis"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "blender",
+      "name": "Blender",
+      "formats": [
+        {
+          "slug": "blender-crashkurs",
+          "title": "Crashkurs",
+          "level": "2 Stunden Hands-on",
+          "summary": "",
+          "agenda": []
+        }
+      ]
+    },
+    {
+      "slug": "cosplay-fotografie",
+      "name": "Cosplay-Fotografie",
+      "formats": [
+        {
+          "slug": "cosplay-foto-1",
+          "title": "Einstieg",
+          "level": "Stufe 1",
+          "summary": "Einstieg in die Fotografie – Cosplay Edition.",
+          "agenda": [
+            "Kamera & Basics",
+            "Belichtung",
+            "Bildgestaltung",
+            "Licht & Praxis"
+          ]
+        },
+        {
+          "slug": "cosplay-foto-2",
+          "title": "Fortgeschritten",
+          "level": "Stufe 2",
+          "summary": "Volle Kontrolle und die richtige Optik, Blitz entfesseln und Licht gestalten.",
+          "agenda": [
+            "Manuell & Objektive",
+            "Licht formen",
+            "Lichtsetups",
+            "Farbe & Workflow"
+          ]
+        },
+        {
+          "slug": "cosplay-foto-3",
+          "title": "Experte",
+          "level": "Stufe 3",
+          "summary": "Storytelling und komplexe Mehrlicht-Setups, HSS, ND-Filter & die Sonne bändigen.",
+          "agenda": [
+            "Konzept & Licht",
+            "On-Location High-End",
+            "Effekte",
+            "Postproduktion"
+          ]
+        }
+      ]
+    }
+  ]
+}
